@@ -178,4 +178,4 @@ def heroes():
     return render_template("heroes.html", current_page="Dota 2 Heroes", heroes=heroes)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(port=80)

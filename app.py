@@ -2,10 +2,13 @@ from flask import Flask, render_template, redirect, url_for, request, session, j
 from connessione import connect
 import google.generativeai as genai
 import json
+from dotenv import load_dotenv
+import os
 
 app = Flask(__name__)
 
-genai.configure(api_key="AIzaSyAdHv7Iyd2T_rvK0Bj9fJiG8OPC8ek9yo0")
+load_dotenv() # Carica le variabili dal file .env
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY") # Leggi la chiave API dal file .env
 model = genai.GenerativeModel("gemini-1.5-flash")
 
 class listHeroes:

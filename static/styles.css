@@ -1,0 +1,176 @@
+.select2-container--bootstrap-5 .select2-selection--single {
+    padding: .375rem 2.25rem .375rem .75rem;
+    background-color: #343a40;
+    border: 1px solid #6c757d;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23FFFFFF' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat;
+    background-position: right .75rem center;
+    background-size: 16px 12px;
+}
+
+.select2-container .select2-selection__placeholder {
+    font-style: italic;
+}
+
+.select2-container--bootstrap-5 .select2-selection--single .select2-selection__arrow {
+    color: #ffffff; /* Colore della freccia */
+}
+
+#select2-enemyHero1-container,
+#select2-enemyHero2-container,
+#select2-enemyHero3-container,
+#select2-enemyHero4-container {
+    color: #BF2E1A;
+    font-weight: 700; /* Opzionale, se vuoi rendere il testo più evidente */
+}
+
+.select2-container .select2-selection--multiple {
+    padding: .375rem 2.25rem .375rem .75rem;
+    background-color: #343a40;
+    border: 1px solid #6c757d;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23FFFFFF' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat;
+    background-position: right .75rem center;
+    background-size: 16px 12px;
+}
+
+.select2-container--bootstrap-5 .select2-selection--multiple .select2-search .select2-search__field::placeholder {
+    color: #6c757d; /* Colore desiderato */
+    font-style: italic; /* Opzionale: per distinguere il placeholder dal contenuto */
+}
+
+.select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__rendered .select2-selection__choice {
+    color: #006335;
+    font-weight: 700;
+}
+
+.select2-container--bootstrap-5 .select2-selection--single .select2-selection__rendered {
+    color: #006335;
+    font-weight: 700;
+}
+
+.select2-container--bootstrap-5 .select2-dropdown {
+    background-color: #343a40; /* Sfondo scuro del menu */
+    color: #ffffff; /* Colore Testo */
+}
+
+.select2-container--bootstrap-5 .select2-search__field {
+    background-color: #495057; /* Sfondo della barra di ricerca */
+    color: #ffffff; /* Testo bianco nella ricerca */
+    border: 1px solid #6c757d; /* Bordo della barra di ricerca */
+}
+
+#direTeam:checked {
+    background-color: #BF2E1A;
+    border-color: #BF2E1A;
+}
+
+.form-check-input:checked {
+    background-color: #006335;
+    border-color: #006335;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3E%3Crect x='-2' y='-2' width='4' height='4' rx='0.5' ry='0.5' fill='%23fff'/%3E%3C/svg%3E");
+    box-shadow: 0 0 0 0.25rem rgba(13,110,253,0);
+}
+
+.form-check-input[type=radio] {
+    border-radius: 30%;
+    box-shadow: 0 0 0 0.25rem rgba(13,110,253,0);
+}
+
+.btn.btn-success { /* adatta il bottone con stile bootstrap "success" per sfruttare tutto lo spazio a disposizione */
+    height: 100%;
+    width: 100%;
+    font-weight: 500; /* valore per modificare il "bold" del testo nel tasto verde */
+}
+
+.btn-danger {
+    --bs-btn-bg: #BF2E1A;
+    --bs-btn-hover-bg: #8A2113;
+}
+
+.btn.btn-danger {
+    height:100%;
+    width: 100%;
+    font-weight: 500; /* valore per modificare il "bold" del testo nel tasto rosso di reset */
+}
+
+.select2-container--bootstrap-5 .select2-dropdown .select2-search .select2-search__field { /* Stile dropdown per search field NR Picker */
+    background-color: #707070; /* Sfondo della barra di ricerca una volta aperto il dropdown */
+    color: #ffffff; /* Colore carattere dentro alla barra di ricerca del dropdown */
+}
+
+.input-group-text-nr {
+    width: 180px; /* Imposta una larghezza fissa per tutte le "label" */
+    justify-content: center; /* Allinea il contenuto al centro */
+}
+
+.input-group-text-cm {
+    width: 125px; /* Imposta una larghezza fissa per tutte le "label" */
+    justify-content: center; /* Allinea il contenuto al centro */
+}
+
+.select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option.select2-results__option--highlighted {
+    color: #ffffff;
+    background-color: #707070;
+}
+
+.cursor {
+    display: inline;
+    font-weight: bold;
+    animation: blink 1s step-start infinite;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0;
+    }
+}
+
+.select2-container--bootstrap-5.select2-container--focus .select2-selection, .select2-container--bootstrap-5.select2-container--open .select2-selection {
+    border-color: #006335;
+    box-shadow: 0 0 0 0.25rem rgba(13,110,253,0);
+}
+
+.select2-container--bootstrap-5 .select2-dropdown .select2-search .select2-search__field:focus {
+    border-color: #006335;
+    box-shadow: 0 0 0 0.25rem rgba(13,110,253,0);
+}
+
+.select2-container--bootstrap-5 .select2-dropdown {
+    border-color: #006335;
+}
+
+.card {
+    height:100%;
+    width: 100%;
+}
+
+.card-title {
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.card-text {
+    font-size: 0.9rem; 
+}
+
+.card-text-title {
+    font-weight: 600;
+}
+
+.bg-danger-home {
+    --bs-bg-opacity: 1;
+    background-color: rgb(191 46 26) !important;
+}
+
+.btn-lg-home {
+    --bs-btn-padding-y: 1rem;
+    --bs-btn-padding-x: 3rem;
+    --bs-btn-font-size: 1.5rem;
+    --bs-btn-border-radius: var(--bs-border-radius-lg);
+    font-weight: 500;
+}
+
+.small, small {
+    font-size: 0.6em;
+}

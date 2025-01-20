@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="row align-items-center" style="height: 15vh;">
+        <h1 class="text-center">DOTA 2 HEROES</h1>
+    </div>
+    <div class="row">
+        <div class="col-12 col-lg-10 offset-lg-1">
+            <div class="row row align-items-right"><!-- Row for dropdown menus --> 
+                <div class="col">
+                    
+                </div>
+            </div>
+            <div class="row">
+                {% for cards in heroes %}
+                    <div class="col-6 col-md-4 col-lg-3 mb-4">
+                        <div class="card position-relative" id="{{cards.heroId}}">
+                            <!-- Hero image -->
+                            <img src="{{ url_for('static', filename='images/' ~ cards.heroId ~ '.png') }}" class="card-img-top" alt="{{ 'card_' ~ cards.heroName }}">
+                            <!-- Attribute hero icon -->
+                            {% if cards.heroPrimaryAttribute == 'agi' %}                           
+                                <img src="{{ url_for('static', filename='images/' ~ 'agility.png') }}" class="position-absolute top-0 end-0 m-2" alt="{{cards.heroPrimaryAttribute}} " data-bs-toggle="tooltip" data-bs-placement="top" title="Agility">
+                            {% elif cards.heroPrimaryAttribute == 'str' %}
+                                <img src="{{ url_for('static', filename='images/' ~ 'strength.png') }}" class="position-absolute top-0 end-0 m-2" alt="{{cards.heroPrimaryAttribute}}" data-bs-toggle="tooltip" data-bs-placement="top" title="Strength">
+                            {% elif cards.heroPrimaryAttribute == 'int' %}
+                                <img src="{{ url_for('static', filename='images/' ~ 'intelligence.png') }}" class="position-absolute top-0 end-0 m-2" alt="{{cards.heroPrimaryAttribute}}" data-bs-toggle="tooltip" data-bs-placement="top" title="Intelligence">
+                            {% elif cards.heroPrimaryAttribute == 'all' %}
+                                <img src="{{ url_for('static', filename='images/' ~ 'universal.png') }}" class="position-absolute top-0 end-0 m-2" alt="{{cards.heroPrimaryAttribute}}" data-bs-toggle="tooltip" data-bs-placement="top" title="Universal">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title mb-4">{{cards.heroName}}</h5>
+                                <p class="card-text"><b>Roles: </b>{{ cards.heroRoles | join(', ') }}</p>
+                                <p class="card-text"><b>Attack type: </b>{{cards.heroAttackType}}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% set title = "Dota 2 Heroes" %}

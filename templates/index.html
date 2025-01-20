@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container py-5 text-light">
+    <!-- Hero Section -->
+    <header class="text-center mb-5">
+        <h1 class="display-4 fw-bold">Unleash Your Potential in Dota 2</h1>
+        <p class="lead">Choose the best heroes with the power of AI and elevate your gameplay to the next level!</p>
+    </header>
+
+    <!-- How It Works Section -->
+    <section class="mb-5">
+        <h2 class="text-center mb-4">How It Works</h2>
+        <div class="row text-center">
+            <div class="col-md-4 mb-3">
+                <div class="card bg-dark text-light border-secondary">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">1. Select Heroes</h5>
+                        <p class="card-text">Add ally and enemy heroes to create the match scenario.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card bg-dark text-light border-secondary">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">2. Get AI Suggestions</h5>
+                        <p class="card-text">Let the AI analyze synergy, counterpicks, and roles for you.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card bg-dark text-light border-secondary">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">3. Dominate the Match!</h5>
+                        <p class="card-text">Pick the best hero and lead your team to victory!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Game Modes Section -->
+    <section class="mb-5">
+        <h2 class="text-center mb-4">Game Modes</h2>
+        <div class="row text-center">
+            <div class="col-md-6 mb-3">
+                <div class="card bg-dark text-light border-secondary">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">Normal/Ranked Mode</h5>
+                        <p class="card-text">Get quick AI-based suggestions for casual or ranked matches.</p>
+                        <a href="{{ url_for('normal_ranked_picker') }}" class="btn btn-outline-light">Explore Normal/Ranked</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card bg-dark text-light border-secondary">
+                    <div class="card-body">
+                        <h5 class="card-title mb-4">Captains Mode</h5>
+                        <p class="card-text">Plan and strategize your picks for competitive matches.</p>
+                        <a href="{{ url_for('captains_mode_picker') }}" class="btn btn-outline-light">Explore Captains Mode</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Explore Heroes Section -->
+    <section class="mb-5">
+        <h2 class="text-center mb-4">Explore Heroes</h2>
+        <p class="text-center">Want to know more about the heroes? Browse our interactive database to learn about their roles, attributes, and attack types.</p>
+        <div class="text-center">
+            <a href="{{ url_for('heroes') }}" class="btn btn-outline-light">View Heroes</a>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="text-center bg-danger-home py-5 rounded">
+        <h2 class="mb-3 text-light">Ready to Take Your Gameplay to the Next Level?</h2>
+        <p class="mb-5 text-light">Start now and get AI-powered suggestions tailored for your Dota 2 matches.</p>
+        <a href="{{ url_for('normal_ranked_picker') }}" class="btn btn-outline-light btn-lg-home">Get Started Now!</a>
+    </section>
+</div>
+{% endblock %}
+{% set title = "Homepage" %}

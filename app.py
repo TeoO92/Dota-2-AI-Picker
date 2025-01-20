@@ -145,7 +145,6 @@ def geminiSuggestCM():
               f"(use 'Public' section or 'Professional' one but not 'Turbo'!). Always keep in mind that i am currently playing as {sideChosen}. DON'T SUGGEST THE ALREADY BANNED HEROES!"
               "YOUR OUTPUT: A text containing an array of hero names with no explanation or anything. "
               "DO NOT FORMAT THE TEXT as code or anything, just provide me with a string of text that contains the array with the suggested heroes.")
-    print(promptCM)
     # Chiama Gemini per generare prompt di risposta
     responseCM = model.generate_content(promptCM)
     # Elabora la risposta (supponendo che response34.text sia un JSON array)
@@ -163,7 +162,7 @@ def heroes():
     # Connessione al database e esecuzione della query + chiusura connessione
     with connect() as conn:
         cursor = conn.cursor()
-        cursor.execute('SELECT* FROM heroes ORDER BY id ASC;')
+        cursor.execute('SELECT * FROM heroes ORDER BY id ASC;')
         results = cursor.fetchall()
         cursor.close()
     heroes = []

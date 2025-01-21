@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 load_dotenv() # Carica le variabili dal file .env
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY") # Leggi la chiave API dal file .env
-model = genai.GenerativeModel("gemini-1.5-flash")
+model = genai.GenerativeModel(model_name='gemini-1.5-flash-8b-latest')
 
 class listHeroes:
     def __init__(self, heroId, heroName, heroPrimaryAttribute, heroAttackType, heroRoles):

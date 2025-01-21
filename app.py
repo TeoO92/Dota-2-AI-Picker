@@ -28,7 +28,7 @@ def normal_ranked_picker():
     # Connessione al database e esecuzione della query
     with connect() as conn:
         cursor = conn.cursor()
-        cursor.execute('SELECT localized_name FROM heroes;')
+        cursor.execute("SELECT localized_name FROM heroes ORDER BY localized_name ASC;")
         results = cursor.fetchall()
         cursor.close()
     heroes = [res[0] for res in results]
@@ -114,13 +114,13 @@ def captains_mode_picker():
     # Connessione al database e esecuzione della query
     with connect() as conn:
         cursor = conn.cursor()
-        cursor.execute('SELECT localized_name FROM heroes;')
+        cursor.execute('SELECT localized_name FROM heroes ORDER BY localized_name ASC;')
         results = cursor.fetchall()
         cursor.close()
     heroes = [res[0] for res in results]
     return render_template("cm.html", current_page="Captains Mode AI Picker", heroes=heroes)
 
-@app.route("/suggestCM", methods=["GET","POST"]) #ROUTE PER suggestCM
+@app.route("/suggestCM", methods=["GET","POST"])
 def geminiSuggestCM():
     # Recupera i dati inviati dal client
     data = request.get_json()
@@ -159,10 +159,9 @@ def geminiSuggestCM():
 
 @app.route("/heroes")
 def heroes():
-    # Connessione al database e esecuzione della query + chiusura connessione
     with connect() as conn:
         cursor = conn.cursor()
-        cursor.execute('SELECT * FROM heroes ORDER BY id ASC;')
+        cursor.execute("SELECT * FROM heroes ORDER BY localized_name ASC;")
         results = cursor.fetchall()
         cursor.close()
     heroes = []
@@ -175,6 +174,135 @@ def heroes():
         cards = listHeroes(heroId, heroName, heroPrimaryAttribute, heroAttackType, heroRoles)
         heroes.append(cards)
     return render_template("heroes.html", current_page="Dota 2 Heroes", heroes=heroes)
+
+@app.route("/heroesMELEE")
+def heroesMELEE():
+    with connect() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM heroes WHERE attack_type = 'Melee' ORDER BY localized_name ASC;")
+        results = cursor.fetchall()
+        cursor.close()
+    heroes = []
+    for res in results:
+        heroId = res[0]
+        heroName = res[1]
+        heroPrimaryAttribute = res[2]
+        heroAttackType = res[3]
+        heroRoles = res[4]
+        cards = listHeroes(heroId, heroName, heroPrimaryAttribute, heroAttackType, heroRoles)
+        heroes.append(cards)
+    return render_template("heroes.html", current_page="Dota 2 Heroes", heroes=heroes)
+
+@app.route("/heroesRANGED")
+def heroesRANGED():
+    with connect() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM heroes WHERE attack_type = 'Ranged' ORDER BY localized_name ASC;")
+        results = cursor.fetchall()
+        cursor.close()
+    heroes = []
+    for res in results:
+        heroId = res[0]
+        heroName = res[1]
+        heroPrimaryAttribute = res[2]
+        heroAttackType = res[3]
+        heroRoles = res[4]
+        cards = listHeroes(heroId, heroName, heroPrimaryAttribute, heroAttackType, heroRoles)
+        heroes.append(cards)
+    return render_template("heroes.html", current_page="Dota 2 Heroes", heroes=heroes)
+
+@app.route("/heroesAGI")
+def heroesAGI():
+    with connect() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM heroes WHERE primary_attr = 'agi' ORDER BY localized_name ASC;")
+        results = cursor.fetchall()
+        cursor.close()
+    heroes = []
+    for res in results:
+        heroId = res[0]
+        heroName = res[1]
+        heroPrimaryAttribute = res[2]
+        heroAttackType = res[3]
+        heroRoles = res[4]
+        cards = listHeroes(heroId, heroName, heroPrimaryAttribute, heroAttackType, heroRoles)
+        heroes.append(cards)
+    return render_template("heroes.html", current_page="Dota 2 Heroes", heroes=heroes)
+
+@app.route("/heroesSTR")
+def heroesSTR():
+    with connect() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM heroes WHERE primary_attr = 'str' ORDER BY localized_name ASC;")
+        results = cursor.fetchall()
+        cursor.close()
+    heroes = []
+    for res in results:
+        heroId = res[0]
+        heroName = res[1]
+        heroPrimaryAttribute = res[2]
+        heroAttackType = res[3]
+        heroRoles = res[4]
+        cards = listHeroes(heroId, heroName, heroPrimaryAttribute, heroAttackType, heroRoles)
+        heroes.append(cards)
+    return render_template("heroes.html", current_page="Dota 2 Heroes", heroes=heroes)
+
+@app.route("/heroesINT")
+def heroesINT():
+    with connect() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM heroes WHERE primary_attr = 'int' ORDER BY localized_name ASC;")
+        results = cursor.fetchall()
+        cursor.close()
+    heroes = []
+    for res in results:
+        heroId = res[0]
+        heroName = res[1]
+        heroPrimaryAttribute = res[2]
+        heroAttackType = res[3]
+        heroRoles = res[4]
+        cards = listHeroes(heroId, heroName, heroPrimaryAttribute, heroAttackType, heroRoles)
+        heroes.append(cards)
+    return render_template("heroes.html", current_page="Dota 2 Heroes", heroes=heroes)
+
+@app.route("/heroesALL")
+def heroesALL():
+    with connect() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM heroes WHERE primary_attr = 'all' ORDER BY localized_name ASC;")
+        results = cursor.fetchall()
+        cursor.close()
+    heroes = []
+    for res in results:
+        heroId = res[0]
+        heroName = res[1]
+        heroPrimaryAttribute = res[2]
+        heroAttackType = res[3]
+        heroRoles = res[4]
+        cards = listHeroes(heroId, heroName, heroPrimaryAttribute, heroAttackType, heroRoles)
+        heroes.append(cards)
+    return render_template("heroes.html", current_page="Dota 2 Heroes", heroes=heroes)
+
+@app.route("/heroesSEARCH")
+def heroesSEARCH():
+    # Recupera i dati inviati dal client
+    data = request.get_json()
+    searchedHero = data.get("searchedHero")
+    with connect() as conn:
+        cursor = conn.cursor()
+        cursor.execute(f"SELECT localized_name FROM heroes WHERE localized_name = '{searchedHero}';")
+        results = cursor.fetchall()
+        cursor.close()
+    heroes = []
+    for res in results:
+        heroId = res[0]
+        heroName = res[1]
+        heroPrimaryAttribute = res[2]
+        heroAttackType = res[3]
+        heroRoles = res[4]
+        cards = listHeroes(heroId, heroName, heroPrimaryAttribute, heroAttackType, heroRoles)
+        heroes.append(cards)
+    return render_template("searchedHero.html", current_page="Dota 2 Searched hero", heroes=heroes)
 
 if __name__ == "__main__":
     app.run(port=80)

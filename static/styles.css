@@ -77,6 +77,16 @@
     box-shadow: 0 0 0 0.25rem rgba(13,110,253,0);
 }
 
+.form-control {
+    border-color: #178754;
+}
+
+.form-control:focus {
+    border-color: #178754; /* Mantieni il verde */
+    box-shadow: none; /* Rimuove l'ombra azzurra */
+    outline: none; /* Rimuove l'outline predefinito */
+}
+
 .btn.btn-success { /* adatta il bottone con stile bootstrap "success" per sfruttare tutto lo spazio a disposizione */
     height: 100%;
     width: 100%;

@@ -63,7 +63,7 @@ def geminiSuggest34():
     try:
         array34 = json.loads(response34.text.replace("'",'"'))  # Parsing JSON in array
     except json.JSONDecodeError:
-        return jsonify({"prompt": "Error: Unable to parse response from Gemini"}), 1000
+        return jsonify({"prompt": "Error: Unable to parse response from Gemini"}), 3000
     # Genera la stringa finale da inviare al frontend
     prompt_response34 = f"Recommended picks: {', '.join(array34)}"
     # Restituisci il prompt come risposta JSON
@@ -103,7 +103,7 @@ def geminiSuggest5():
     try:
         array5 = json.loads(response5.text.replace("'",'"'))  # Parsing JSON in array
     except json.JSONDecodeError:
-        return jsonify({"prompt": "Error: Unable to parse response from Gemini"}), 1000
+        return jsonify({"prompt": "Error: Unable to parse response from Gemini"}), 3000
     # Genera la stringa finale da inviare al frontend
     prompt_response5 = f"Recommended picks: {', '.join(array5)}"
     # Restituisci il prompt come risposta JSON
@@ -151,7 +151,7 @@ def geminiSuggestCM():
     try:
         arrayCM = json.loads(responseCM.text.replace("'",'"'))  # Parsing JSON in array
     except json.JSONDecodeError:
-        return jsonify({"prompt": "Error: Unable to parse response from Gemini"}), 2000
+        return jsonify({"prompt": "Error: Unable to parse response from Gemini"}), 3000
     # Genera la stringa finale da inviare al frontend
     prompt_responseCM = f"Recommended picks: {', '.join(arrayCM)}"
     # Restituisci il prompt come risposta JSON

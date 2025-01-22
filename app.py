@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, url_for, request, session, jsonify
-from connessione import connect
+from connection import connect
 import google.generativeai as genai
 import json
 from dotenv import load_dotenv
@@ -7,8 +7,8 @@ import os
 
 app = Flask(__name__)
 
-load_dotenv() # Carica le variabili dal file .env
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY") # Leggi la chiave API dal file .env
+load_dotenv() # Loads environmental variables from .env file (or Render)
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY") # Loads environmental variables from .env file (or Render)
 model = genai.GenerativeModel(model_name='gemini-1.5-flash-8b-latest')
 
 class listHeroes:
@@ -25,24 +25,22 @@ def home():
 
 @app.route("/normal_ranked")
 def normal_ranked_picker():
-    # Connessione al database e esecuzione della query
-    with connect() as conn:
+    with connect() as conn: # Connect to db and execute the query
         cursor = conn.cursor()
         cursor.execute("SELECT localized_name FROM heroes ORDER BY localized_name ASC;")
         results = cursor.fetchall()
         cursor.close()
     heroes = [res[0] for res in results]
-    return render_template("nr.html", current_page="Normal/Ranked AI Picker", heroes=heroes)
+    return render_template("nr.html", current_page="Dota 2 AI Picker - Normal/Ranked", heroes=heroes)
 
 @app.route("/suggest34nr", methods=["POST"])
 def geminiSuggest34():
-    # Recupera i dati inviati dal client
-    data = request.get_json()
+    data = request.get_json() # Gather data sent from client
     allied_hero1 = data.get("alliedHero1")
     allied_hero2 = data.get("alliedHero2")
     enemy_hero1 = data.get("enemyHero1")
     enemy_hero2 = data.get("enemyHero2")
-    # Prompt da inviare a Gemini
+    # Prompt for Gemini AI
     prompt34 = (f"Create a list of eight Dota 2 heroes to choose from, considering the following picks: "
               f"Allied: {allied_hero1}, {allied_hero2}; Enemies: {enemy_hero1}, {enemy_hero2}. "
               "To give me the most accurate suggestions, you MUST consider ALL of these parameters:"
@@ -57,22 +55,17 @@ def geminiSuggest34():
               "otherwise choose the best heroes using the same logic I described after the list of allied and enemy heroes."              
               "YOUR OUTPUT: A text containing an array of hero names with no explanation or anything. "
               "DO NOT FORMAT THE TEXT as code or anything, just provide me with a string of text that contains the array with the suggested heroes.")
-    # Chiama Gemini per generare prompt di risposta
-    response34 = model.generate_content(prompt34)
-    # Elabora la risposta (supponendo che response34.text sia un JSON array)
-    try:
+    response34 = model.generate_content(prompt34) # Calls Gemini AI to get a response prompt
+    try: # Process the response (assuming that response34.text is a JSON array)
         array34 = json.loads(response34.text.replace("'",'"'))  # Parsing JSON in array
     except json.JSONDecodeError:
         return jsonify({"prompt": "Error: Unable to parse response from Gemini"}), 6660
-    # Genera la stringa finale da inviare al frontend
-    prompt_response34 = f"Recommended picks: {', '.join(array34)}"
-    # Restituisci il prompt come risposta JSON
-    return jsonify({"prompt": prompt_response34})
+    prompt_response34 = f"Recommended picks: {', '.join(array34)}" # Generate the final string to send to the frontend in the relative textbox
+    return jsonify({"prompt": prompt_response34}) # Return the prompt as a JSON response
 
 @app.route("/suggest5nr", methods=["POST"])
 def geminiSuggest5():
-    # Recupera i dati inviati dal client
-    data = request.get_json()
+    data = request.get_json() # Gather data sent from client
     allied_hero1 = data.get("alliedHero1")
     allied_hero2 = data.get("alliedHero2")
     allied_hero3 = data.get("alliedHero3")
@@ -81,7 +74,7 @@ def geminiSuggest5():
     enemy_hero2 = data.get("enemyHero2")
     enemy_hero3 = data.get("enemyHero3")
     enemy_hero4 = data.get("enemyHero4")
-    # Prompt da inviare a Gemini
+    # Prompt for Gemini AI
     prompt5 = (f"Create a list of eight Dota 2 heroes to choose from, considering the following picks: "
               f"Allied: {allied_hero1}, {allied_hero2}, {allied_hero3}, {allied_hero4}; Enemies: {enemy_hero1}, {enemy_hero2}, {enemy_hero3}, {enemy_hero4}. "
               "To give me the most accurate suggestions, you MUST consider ALL of these parameters:"
@@ -97,39 +90,33 @@ def geminiSuggest5():
               "If not, suggest a midlaner; otherwise choose the best heroes using the same logic i described after the list of allied and enemy heroes."
               "YOUR OUTPUT: A text containing an array of hero names with no explanation or anything. "
               "DO NOT FORMAT THE TEXT as code or anything, just provide me with a string of text that contains the array with the suggested heroes.")
-    # Chiama Gemini per generare prompt di risposta
-    response5 = model.generate_content(prompt5)
-    # Elabora la risposta (supponendo che response34.text sia un JSON array)
-    try:
+    response5 = model.generate_content(prompt5) # Calls Gemini AI to get a response prompt
+    try: # Process the response (assuming that response5.text is a JSON array)
         array5 = json.loads(response5.text.replace("'",'"'))  # Parsing JSON in array
     except json.JSONDecodeError:
         return jsonify({"prompt": "Error: Unable to parse response from Gemini"}), 6660
-    # Genera la stringa finale da inviare al frontend
-    prompt_response5 = f"Recommended picks: {', '.join(array5)}"
-    # Restituisci il prompt come risposta JSON
-    return jsonify({"prompt": prompt_response5})
+    prompt_response5 = f"Recommended picks: {', '.join(array5)}" # Generate the final string to send to the frontend in the relative textbox
+    return jsonify({"prompt": prompt_response5}) # Return the prompt as a JSON response
 
 @app.route("/captains_mode")
 def captains_mode_picker():
-    # Connessione al database e esecuzione della query
-    with connect() as conn:
+    with connect() as conn: # Connect to db and execute the query
         cursor = conn.cursor()
         cursor.execute('SELECT localized_name FROM heroes ORDER BY localized_name ASC;')
         results = cursor.fetchall()
         cursor.close()
     heroes = [res[0] for res in results]
-    return render_template("cm.html", current_page="Captains Mode AI Picker", heroes=heroes)
+    return render_template("cm.html", current_page="Dota 2 AI Picker - Captains Mode", heroes=heroes)
 
 @app.route("/suggestCM", methods=["GET","POST"])
 def geminiSuggestCM():
-    # Recupera i dati inviati dal client
-    data = request.get_json()
+    data = request.get_json() # Gather data sent from client
     sideChosen = data.get("sideChosen")
     radiantBans = data.get("radiantBans")
     radiantPicks = data.get("radiantPicks")
     direBans = data.get("direBans")
     direPicks = data.get("direPicks")
-    # Prompt da inviare a Gemini
+    # Prompt for Gemini AI
     promptCM = (f"I am playing at Dota 2 in Captains Mode and actually playing as {sideChosen}. "
               f"Create a list of eight Dota 2 heroes to choose from, considering the following picks and bans: "
               f"Radiant bans: {radiantBans}; radiant picks: {radiantPicks}; Dire bans: {direBans}; Dire Picks: {direPicks}. "
@@ -145,17 +132,13 @@ def geminiSuggestCM():
               f"(use 'Public' section or 'Professional' one but not 'Turbo'!). Always keep in mind that i am currently playing as {sideChosen}. DON'T SUGGEST THE ALREADY BANNED HEROES!"
               "YOUR OUTPUT: A text containing an array of hero names with no explanation or anything. "
               "DO NOT FORMAT THE TEXT as code or anything, just provide me with a string of text that contains the array with the suggested heroes.")
-    # Chiama Gemini per generare prompt di risposta
-    responseCM = model.generate_content(promptCM)
-    # Elabora la risposta (supponendo che response34.text sia un JSON array)
-    try:
+    responseCM = model.generate_content(promptCM) # Calls Gemini AI to get a response prompt
+    try: # Process the response (assuming that responseCM.text is a JSON array)
         arrayCM = json.loads(responseCM.text.replace("'",'"'))  # Parsing JSON in array
     except json.JSONDecodeError:
         return jsonify({"prompt": "Error: Unable to parse response from Gemini"}), 6660
-    # Genera la stringa finale da inviare al frontend
-    prompt_responseCM = f"Recommended picks: {', '.join(arrayCM)}"
-    # Restituisci il prompt come risposta JSON
-    return jsonify({"prompt": prompt_responseCM})
+    prompt_responseCM = f"Recommended picks: {', '.join(arrayCM)}" # Generate the final string to send to the frontend in the relative textbox
+    return jsonify({"prompt": prompt_responseCM}) # Return the prompt as a JSON response
 
 @app.route("/heroes")
 def heroes():
@@ -191,7 +174,7 @@ def heroesMELEE():
         heroRoles = res[4]
         cards = listHeroes(heroId, heroName, heroPrimaryAttribute, heroAttackType, heroRoles)
         heroes.append(cards)
-    return render_template("heroes.html", current_page="Dota 2 Heroes", heroes=heroes)
+    return render_template("heroes.html", current_page="Dota 2 Melee Heroes", heroes=heroes)
 
 @app.route("/heroesRANGED")
 def heroesRANGED():
@@ -209,7 +192,7 @@ def heroesRANGED():
         heroRoles = res[4]
         cards = listHeroes(heroId, heroName, heroPrimaryAttribute, heroAttackType, heroRoles)
         heroes.append(cards)
-    return render_template("heroes.html", current_page="Dota 2 Heroes", heroes=heroes)
+    return render_template("heroes.html", current_page="Dota 2 Ranged Heroes", heroes=heroes)
 
 @app.route("/heroesAGI")
 def heroesAGI():
@@ -227,7 +210,7 @@ def heroesAGI():
         heroRoles = res[4]
         cards = listHeroes(heroId, heroName, heroPrimaryAttribute, heroAttackType, heroRoles)
         heroes.append(cards)
-    return render_template("heroes.html", current_page="Dota 2 Heroes", heroes=heroes)
+    return render_template("heroes.html", current_page="Dota 2 Agility Heroes", heroes=heroes)
 
 @app.route("/heroesSTR")
 def heroesSTR():
@@ -245,7 +228,7 @@ def heroesSTR():
         heroRoles = res[4]
         cards = listHeroes(heroId, heroName, heroPrimaryAttribute, heroAttackType, heroRoles)
         heroes.append(cards)
-    return render_template("heroes.html", current_page="Dota 2 Heroes", heroes=heroes)
+    return render_template("heroes.html", current_page="Dota 2 Strenght Heroes", heroes=heroes)
 
 @app.route("/heroesINT")
 def heroesINT():
@@ -263,7 +246,7 @@ def heroesINT():
         heroRoles = res[4]
         cards = listHeroes(heroId, heroName, heroPrimaryAttribute, heroAttackType, heroRoles)
         heroes.append(cards)
-    return render_template("heroes.html", current_page="Dota 2 Heroes", heroes=heroes)
+    return render_template("heroes.html", current_page="Dota 2 Intelligence Heroes", heroes=heroes)
 
 @app.route("/heroesALL")
 def heroesALL():
@@ -281,11 +264,11 @@ def heroesALL():
         heroRoles = res[4]
         cards = listHeroes(heroId, heroName, heroPrimaryAttribute, heroAttackType, heroRoles)
         heroes.append(cards)
-    return render_template("heroes.html", current_page="Dota 2 Heroes", heroes=heroes)
+    return render_template("heroes.html", current_page="Dota 2 Universal Heroes", heroes=heroes)
 
-''' @app.route("/heroDetail")
+''' @app.route("/heroDetail")      "---  FUTURE UPDATE. WORK IN PROGRESS  ---"
     def heroDetail():
-        # Recupera i dati inviati dal client
+        # Gather data sent from client
         data = request.get_json()
         searchedHero = data.get("searchedHero")
         with connect() as conn:

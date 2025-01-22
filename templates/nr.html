@@ -15,7 +15,7 @@
         </div>
     </div>
     <h5 class="mb-4">FIRST PHASE</h5>
-    <div class="row"> <!-- Row contenitore input group prima fase -->
+    <div class="row"> <!-- Row containing input group first phase -->
         <div class="col-lg-5 col-sm-12 mb-3">
             <div class="input-group mb-3">
                 <div class="input-group-text input-group-text-nr">Your team pick nr. 1</div>
@@ -60,7 +60,7 @@
             <button id="suggestButton34nr" type="button" class="btn btn-success">SUGGEST 3° AND 4° PICKS</button>
         </div>
     </div>
-    <div class="row mt-4 mb-4"> <!-- Row contenitore primo pulsante suggerimenti -->
+    <div class="row mt-4 mb-4"> <!-- Row containing first button for suggestions -->
         <div class="col-12">
             <div id="picks34TextBox" class="border p-3" style="font-family: 'Courier New', monospace; height: auto;">
                 <p>Your team should choose two of those heroes for the 3^ and 4^ pick:</p>
@@ -69,7 +69,7 @@
         </div>
     </div>
     <h5 class="mt-5 mb-4">SECOND PHASE</h5>
-    <div class="row"> <!-- Row contenitore seconda fase -->
+    <div class="row"> <!-- Row containing input group second phase -->
         <div class="col-lg-5 col-sm-12 mb-3">
             <div class="input-group mb-3">
                 <div class="input-group-text input-group-text-nr">Your team pick nr. 3</div>
@@ -114,7 +114,7 @@
             <button id="suggestButton5" type="button" class="btn btn-success">SUGGEST 5° PICK</button>
         </div>
     </div>
-    <div class="row mt-4 mb-5 "> <!-- Row contenitore secondo pulsante suggerimenti -->
+    <div class="row mt-4 mb-5 "> <!-- Row containing second button for suggestions -->
         <div class="col-12">
             <div id="picks5TextBox" class="border p-3" style="font-family: 'Courier New', monospace; height: auto;">
                 <p>Your team should choose one of those heroes for the 5^ and last pick:</p>
@@ -122,47 +122,38 @@
             </div>
         </div>
     </div>
-    <div class="row justify-content-center mb-4"> <!-- Row contenitore pulsante reset -->
+    <div class="row justify-content-center mb-4"> <!-- Row containing reset button -->
         <div class="col-8 col-lg-4 col-sm-6">
             <button type="button" class="btn btn-danger" id="resetPage">RESET</button>
         </div>
     </div>
     <script>
         $(document).ready(function() {
-            $('.select2').val(null).trigger('change'); // Reset di tutte le select2 al caricamento della pagina (F5)
-            // Inizializzazione di Select2
-            $('.select2').select2({
+            $('.select2').val(null).trigger('change'); // Reset all select2 at loading page (F5)
+            $('.select2').select2({ // Initializing Select2
                 theme: "bootstrap-5",
                 placeholder: function () {
                     return $(this).data('placeholder');
                 },
                 multiple: false
             });
-			
 			$('.select2').on('select2:open', function () {
 				const searchField = document.querySelector('.select2-container--open .select2-search__field');
 				if (searchField) {
 					searchField.focus();
 				}
 			});
-			
-            // Funzione per aggiornare le opzioni disponibili nelle select
-            function updateSelectOptions() {
-                const allSelectedValues = new Set();
-    
-                // Raccogli tutti i valori selezionati
-                $('.select2').each(function() {
+            function updateSelectOptions() { // Function that update available options inside select2
+                const allSelectedValues = new Set();          
+                $('.select2').each(function() { // Collect all selected options from all select2
                     const value = $(this).val();
                     if (value) {
                         allSelectedValues.add(value);
                     }
                 });
-    
-                // Disabilita i valori già selezionati nelle altre select
-                $('.select2').each(function() {
+                $('.select2').each(function() { // Disables all options already selected previously
                     const currentSelect = $(this);
                     const currentValue = currentSelect.val();
-    
                     currentSelect.find('option').each(function() {
                         const optionValue = $(this).attr('value');
                         if (allSelectedValues.has(optionValue) && optionValue !== currentValue) {
@@ -173,65 +164,46 @@
                     });
                 });
             }
-    
-            // Aggiorna le opzioni disponibili quando una select cambia valore
-            $('.select2').on('change', function() {
+            $('.select2').on('change', function() { // Updates available options when a select2 change value
                 updateSelectOptions();
             });
-    
-            // Aggiorna le opzioni all'avvio della pagina
-            updateSelectOptions();
-    
-            // Funzioni per verificare se le scelte sono complete
-            function areFirstPhasePicksSelected() {
+            updateSelectOptions(); // Calls the function to update the options
+            function areFirstPhasePicksSelected() { // Function to check if all 4 options in the first phase are selected
                 const alliedHero1 = $('#alliedHero1').val();
                 const alliedHero2 = $('#alliedHero2').val();
                 const enemyHero1 = $('#enemyHero1').val();
                 const enemyHero2 = $('#enemyHero2').val();
                 return alliedHero1 && alliedHero2 && enemyHero1 && enemyHero2;
             }
-    
-            function areSecondPhasePicksSelected() {
+            function areSecondPhasePicksSelected() { // Function to check if all 4 options in the second phase are selected
                 const alliedHero3 = $('#alliedHero3').val();
                 const alliedHero4 = $('#alliedHero4').val();
                 const enemyHero3 = $('#enemyHero3').val();
                 const enemyHero4 = $('#enemyHero4').val();
                 return alliedHero3 && alliedHero4 && enemyHero3 && enemyHero4;
             }
-    
-            // Funzione per simulare la digitazione
-            function simulateTyping(elementId, text, cursorId) {
+            function simulateTyping(elementId, text, cursorId) { //Function to simulate typing inside the textbox
                 const element = document.getElementById(elementId);
                 const cursor = document.getElementById(cursorId);
-                element.innerHTML = ""; // Reset dell'elemento
+                element.innerHTML = "";
                 let index = 0;
-    
                 const interval = setInterval(() => {
                     if (index < text.length) {
-                        if (text.charAt(index) === "<" && text.substr(index, 4) === "<br>") {
-                            element.innerHTML += "<br>";
-                            index += 4;
-                        } else {
-                            element.innerHTML += text.charAt(index);
-                            index++;
-                        }
+                        element.innerHTML += text.charAt(index);
+                        index++;
                     } else {
                         clearInterval(interval);
-                        cursor.style.display = "none"; // Nasconde il cursore dopo aver scritto
+                        cursor.style.display = "none"; // Hide the cursor after the writing phase
                     }
-                }, 14);
-    
-                // Effetto del cursore lampeggiante
-                cursor.style.visibility = "visible";
+                }, 14); // This value is in ms. Closest to 0 means faster typing
+                cursor.style.visibility = "visible"; //Simulate blinking cursor like in command prompt
                 setInterval(() => {
                     cursor.style.visibility = (cursor.style.visibility === "hidden") ? "visible" : "hidden";
-                }, 500);
+                }, 500); // This value is in ms. Closest to 0 means faster blinking cursor
             }
-    
-            // Evento per il pulsante di suggerimento 3° e 4°
-            document.getElementById("suggestButton34nr").addEventListener("click", (event) => {
+            document.getElementById("suggestButton34nr").addEventListener("click", (event) => { //Event to manage waht appens after first suggestion button being pressed
                 const button = event.target;
-                if (!areFirstPhasePicksSelected()) {
+                if (!areFirstPhasePicksSelected()) { // Error managment
                     $('#warningMessage34nr').remove();
                     const warningHtml = '<div id="warningMessage34nr" class="alert alert-danger" role="alert">Please select all the heroes for both teams before proceeding!</div>';
                     $(button).closest('.row').before(warningHtml);
@@ -240,35 +212,30 @@
                 $('#warningMessage34nr').remove();
                 button.disabled = true;
                 button.classList.add("disabled");
-                // Recupera i valori selezionati
-                const data = {
+                const data = { //Gathering the selected options and assign them to the associated variables
                     alliedHero1: $('#alliedHero1').val(),
                     alliedHero2: $('#alliedHero2').val(),
                     enemyHero1: $('#enemyHero1').val(),
                     enemyHero2: $('#enemyHero2').val(),
                 };
-                // Invia i dati al server tramite AJAX
-                $.ajax({
-                    url: "/suggest34nr", // Endpoint definito in Flask
+                $.ajax({ //Pass data to the backend via AJAX
+                    url: "/suggest34nr", // Defined endpoint in flask
                     type: "POST",
                     contentType: "application/json",
-                    data: JSON.stringify(data), // Serializza i dati in JSON
-                    success: function(response) {
-                        // Simula la digitazione usando il testo restituito dal server
+                    data: JSON.stringify(data), // Serialize data in JSON
+                    success: function(response) { //If the responde prompt from Gemini API is received, call the function that simulate the typing in the first textbox
                         simulateTyping("generatedText34nr", response.prompt, "cursor34nr");
                     },
-                    error: function() {
+                    error: function() { //Prompt error message if not
                         alert("An error occurred while processing your request. Please try again.");
                         button.disabled = false;
                         button.classList.remove("disabled");
                     }
                 });
             });
-    
-            // Evento per il pulsante di suggerimento 5°
-            document.getElementById("suggestButton5").addEventListener("click", (event) => {
+            document.getElementById("suggestButton5").addEventListener("click", (event) => { //Event to manage waht appens after second suggestion button being pressed
                 const button = event.target;
-                if (!areSecondPhasePicksSelected()) {
+                if (!areSecondPhasePicksSelected()) { // Error managment
                     $('#warningMessage5nr').remove();
                     const warningHtml = '<div id="warningMessage5nr" class="alert alert-danger" role="alert">Please select all the heroes for both teams before proceeding!</div>';
                     $(button).closest('.row').before(warningHtml);
@@ -277,8 +244,7 @@
                 $('#warningMessage5nr').remove();
                 button.disabled = true;
                 button.classList.add("disabled");
-                // Recupera i valori selezionati
-                const data = {
+                const data = { //Gathering the selected options (first and second phase) and assign them to the associated variables
                     alliedHero1: $('#alliedHero1').val(),
                     alliedHero2: $('#alliedHero2').val(),
                     alliedHero3: $('#alliedHero3').val(),
@@ -288,34 +254,30 @@
                     enemyHero3: $('#enemyHero3').val(),
                     enemyHero4: $('#enemyHero4').val(),
                 };
-                // Invia i dati al server tramite AJAX
-                $.ajax({
-                    url: "/suggest5nr", // Endpoint definito in Flask
+                $.ajax({ //Pass data to the backend via AJAX
+                    url: "/suggest5nr", // Defined endpoint in flask
                     type: "POST",
                     contentType: "application/json",
-                    data: JSON.stringify(data), // Serializza i dati in JSON
-                    success: function(response) {
-                        // Simula la digitazione usando il testo restituito dal server
+                    data: JSON.stringify(data), // Serialize data in JSON
+                    success: function(response) { //If the responde prompt from Gemini API is received, call the function that simulate the typing in the second textbox
                         simulateTyping("generatedText5", response.prompt, "cursor5");
                     },
-                    error: function() {
+                    error: function() { //Prompt error message if not
                         alert("An error occurred while processing your request. Please try again.");
                         button.disabled = false;
                         button.classList.remove("disabled");
                     }
                 });
             });
-    
-            // Evento per il pulsante di reset
-            document.getElementById('resetPage').addEventListener('click', function() {
-                $('.select2').val(null).trigger('change'); // Reset di tutte le select2
-                $('#warningMessage34nr').remove(); // Rimuovi messaggi di avviso
-                $('#warningMessage5nr').remove();
-                $('#generatedText34nr').html('<span id="cursor34nr" class="cursor">|</span>'); // Reset testo
-                $('#generatedText5').html('<span id="cursor5" class="cursor">|</span>'); // Reset testo
-                $('#suggestButton34nr').prop('disabled', false).removeClass('disabled');
-                $('#suggestButton5').prop('disabled', false).removeClass('disabled');
-                updateSelectOptions(); // Aggiorna le opzioni disponibili
+            document.getElementById('resetPage').addEventListener('click', function() { //Event to manage the reset button
+                $('.select2').val(null).trigger('change'); // Reset all select2
+                $('#warningMessage34nr').remove(); // Remove first phase warning messages
+                $('#warningMessage5nr').remove(); // Remove second phase warning messages
+                $('#generatedText34nr').html('<span id="cursor34nr" class="cursor">|</span>'); // Reset first phase textbox
+                $('#generatedText5').html('<span id="cursor5" class="cursor">|</span>'); // Reset second phase textbox
+                $('#suggestButton34nr').prop('disabled', false).removeClass('disabled'); // Remove disabled status of the first suggestion button
+                $('#suggestButton5').prop('disabled', false).removeClass('disabled'); // Remove disabled status of the second suggestion button
+                updateSelectOptions(); // Calls the function to update the options
             });
         });
     </script>            

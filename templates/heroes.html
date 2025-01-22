@@ -30,7 +30,7 @@
                         <button class="btn btn-outline-success ms-3" type="submit" id="searchedHeroButton" style="width:30%;">Search</button>
                     </form>
                 </div>
-                <div class="col-12 col-sm-6 col-lg-4"></div> <!-- Colonna vuota -->
+                <div class="col-12 col-sm-6 col-lg-4"></div> <!-- Empty column for spacing the other 2 -->
                 <div class="col-12 col-sm-6 col-lg-4">
                     <div class="d-flex">
                         <div class="dropdown me-3" style="width:70%;">
@@ -101,15 +101,15 @@
         });
         document.getElementById("searchedHeroButton").addEventListener("click", (event) => {
             event.preventDefault();
-            const selectedHero = $('#searchedHero').val(); // Prende il valore selezionato nella select2
-            if (selectedHero) { // Nascondo tutte le card e mostro solamente la card corrispondente al valore selezionato nella select2
+            const selectedHero = $('#searchedHero').val(); // Gather the selected option inside select2
+            if (selectedHero) { // Hide all the cards and show only the corresponding card to the hero selected
                 $('.card').hide(); 
                 const heroCard = $(`.card`).filter(function () { 
                     return $(this).find('.card-title').text().trim() === selectedHero;
                 });
                 heroCard.show(); 
-            } else { // Se non è selezionato nulla, 
-                $('.card').show(); // mostra tutte le card
+            } else { // If nothing was selected, 
+                $('.card').show(); // show all the cards
             }
         });
     </script>

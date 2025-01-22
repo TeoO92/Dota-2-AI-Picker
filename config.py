@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 
 def config():
-    load_dotenv() # Carica le variabili dal file .env
+    load_dotenv() # Loads environmental variables from .env file (or Render)
     DATABASE_URL = os.getenv('DATABASE_URL')
     if DATABASE_URL is None:
         raise Exception("DATABASE_URL environment variable is not set.")

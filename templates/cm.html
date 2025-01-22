@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
 <style>
-    /* Selettore che ignora la parte dinamica -a811- */
     [id^="select2-direBans-container-choice-"],
     [id^="select2-radiantBans-container-choice-"] {
         color: #BF2E1A;
@@ -24,7 +23,7 @@
         </div>
     </div>
 </div>
-<div class="row mt-5"> <!-- Row selettore radiant/dire -->
+<div class="row mt-5"> <!-- Row radio buttun radiant/dire -->
     <div class="col">
         <div class="d-inline-block me-5" style="font-weight: 600;">Which side are you playing?</div>
         <div class="form-check form-check-inline">
@@ -37,7 +36,7 @@
         </div>
     </div> 
 </div>
-<div class="row mt-5"> <!-- Row contenitore input group e pulsante-->
+<div class="row mt-5"> <!-- Row Row containing input groups and button-->
     <div class="col-lg-5 col-sm-12 mb-5">
         <div class="input-group mb-3">
             <div class="input-group-text input-group-text-cm">Radiant Bans</div>
@@ -78,7 +77,7 @@
         <button id="suggestButton" type="button" class="btn btn-success">SUGGEST PICKS AND BANS</button>
     </div>
 </div>
-<div class="row mb-4"> <!-- Row contenitore suggerimenti -->
+<div class="row mb-4"> <!-- Row containing textbox with generated suggestions -->
     <div class="col-12">
         <div id="picksCMTextBox" class="border p-3" style="font-family: 'Courier New', monospace; height: auto;">
             <p>Suggestions: </p>
@@ -86,43 +85,42 @@
         </div>
     </div>
 </div>
-<div class="row justify-content-center mb-4"> <!-- Row contenitore pulsante reset -->
+<div class="row justify-content-center mb-4"> <!-- Row containing reset button -->
     <div class="col-8 col-lg-4 col-sm-6">
         <button type="button" class="btn btn-danger" id="resetPage">RESET</button>
     </div>
 </div>
 <script>
     $(document).ready(function() {
-        $('input[name="sideChosen"]').prop('checked', false); // Rimuove l'eventuale scelta fatta nei radio button
-        $('.select2').val(null).trigger('change'); // Reset di tutte le select2 al caricamento della pagina (F5)
-        $('.select2').select2({ // Inizializzazione di Select2
+        $('input[name="sideChosen"]').prop('checked', false); // Removes any choice made in the radio buttons
+        $('.select2').val(null).trigger('change'); // Reset all select2 at loading page (F5)
+        $('.select2').select2({ // Initializing Select2
             theme: "bootstrap-5",
             placeholder: function () {
                 return $(this).data('placeholder');
             },
             multiple: true
         });
-        $('.select2').on('select2:open', function () {
+        $('.select2').on('select2:open', function () { // Force focus at the opening of the select2
             const searchField = document.querySelector('.select2-container--open .select2-search__field');
             if (searchField) {
                 searchField.focus();
             }
         });
-        function updateSelectOptions() { // Funzione per aggiornare le opzioni disponibili nelle select
+        function updateSelectOptions() { // Function that update available options inside select2
             const allSelectedValues = new Set();
-            
-            $('.select2').each(function() { // Raccoglie tutti i valori selezionati da tutte le select
-                const values = $(this).val(); // Ottiene i valori selezionati (che sono di tipo array essendo una select multiple)
+            $('.select2').each(function() { // Collect all selected options from all select2
+                const values = $(this).val(); // These values are array type being a multiple type select
                 if (values) {
-                    values.forEach(value => allSelectedValues.add(value)); // Aggiungi ogni valore al Set
+                    values.forEach(value => allSelectedValues.add(value));
                 }
             });
-            $('.select2').each(function() { // Disabilita tutti i valori già selezionati nelle varie select
+            $('.select2').each(function() { // Disables all options already selected previously
                 const currentSelect = $(this);
-                const currentValues = currentSelect.val(); // Ottiene i valori selezionati (che sono di tipo array essendo una select multiple)
-                currentSelect.find('option').each(function() { // Disabilita le opzioni già selezionate
+                const currentValues = currentSelect.val(); 
+                currentSelect.find('option').each(function() { 
                     const optionValue = $(this).attr('value');
-                    if (allSelectedValues.has(optionValue) && !currentValues.includes(optionValue)) { // Disabilita se l'opzione è già selezionata in un'altra select e non è la stessa
+                    if (allSelectedValues.has(optionValue) && !currentValues.includes(optionValue)) { // Disable the option if it is already selected in another select2 and it is not the same
                         $(this).prop('disabled', true);
                     } else {
                         $(this).prop('disabled', false);
@@ -130,87 +128,79 @@
                 });
             });
         }
-        $('.select2').on('change', function() { // Aggiorna le opzioni disponibili quando una select cambia valore
+        $('.select2').on('change', function() { // Updates available options when a select2 change value
             updateSelectOptions();
         });
-        updateSelectOptions(); // Aggiorna le opzioni all'avvio della pagina
-        function isTeamSelected() { // Funzione per verificare se la scelta nel radio "sideChosen" è stata fatta
+        updateSelectOptions(); // Calls the function to update the options
+        function isTeamSelected() { // Function to verify if the radio button "sideChosen" on top is selected
             const sideChosen = $('input[name="sideChosen"]:checked').val();
-            return sideChosen !== undefined; // Restituisce true se un'opzione è selezionata, altrimenti false
+            return sideChosen !== undefined; // Returns true if an option is selected; otherwise, false.
         }
-        function areBansSelected() { // Funzione per verificare che ci sia almeno una selezione in entrambe le select dei ban
+        function areBansSelected() { // Function to verify if there is at least 1 selected option in both bans teams select2 and assign their values
                 const radiantBans = $('#radiantBans').val();
                 const direBans = $('#direBans').val();
-                return (radiantBans && radiantBans.length > 0) && (direBans && direBans.length > 0); // Controlla se ci sono selezioni in entrambe le select dei bans
+                return (radiantBans && radiantBans.length > 0) && (direBans && direBans.length > 0);
         }
-
-        
-        function simulateTyping(elementId, text, cursorId) { // Funzione che serve a simulare la digitazione nella textbox
+        function simulateTyping(elementId, text, cursorId) { //Function to simulate typing inside the textbox
             const element = document.getElementById(elementId);
             const cursor = document.getElementById(cursorId);
-            element.innerHTML = ""; // Reset dell'elemento
+            element.innerHTML = "";
             let index = 0;
             const interval = setInterval(() => {
                 if (index < text.length) {
-                    if (text.charAt(index) === "<" && text.substr(index, 4) === "<br>") {
-                        element.innerHTML += "<br>";
-                        index += 4;
-                    } else {
-                        element.innerHTML += text.charAt(index);
-                        index++;
-                    }
+                    element.innerHTML += text.charAt(index);
+                    index++;
                 } else {
                     clearInterval(interval);
-                    cursor.style.display = "none"; // Nasconde il cursore dopo aver scritto
+                    cursor.style.display = "none"; // Hide the cursor after the writing phase
                 }
-            }, 14); // Tempo in millisecondi. Indica quanti millisecondi servono a scrivere un carattere. Più il valore è piccolo e più velocemente verrà scritto dinamicamente il testo
-            cursor.style.visibility = "visible"; // Effetto del cursore lampeggiante
+            }, 14); // This value is in ms. Closest to 0 means faster typing
+            cursor.style.visibility = "visible"; //Simulate blinking cursor like in command prompt
             setInterval(() => {
                 cursor.style.visibility = (cursor.style.visibility === "hidden") ? "visible" : "hidden";
-            }, 500);
+            }, 500); // This value is in ms. Closest to 0 means faster blinking cursor
         }
-        
-        document.getElementById("suggestButton").addEventListener("click", (event) => { // Evento che gestisce quello che succede alla pressione del pulsante di suggerimento AI
+        document.getElementById("suggestButton").addEventListener("click", (event) => { //Event to manage waht appens after suggestion button being pressed
             const button = event.target;
-            if (!isTeamSelected()) {
+            if (!isTeamSelected()) { // Error managment
                     $('#warningMessage').remove();
                     const warningHtml = '<div id="warningMessage" class="alert alert-danger mt-3" role="alert">Please select your faction before proceeding!</div>';
                     $(button).closest('.row').before(warningHtml);
                     return;
             }
-            if (!areBansSelected()) {
-                $('#warningMessage').remove(); // Rimuovi il messaggio di avviso precedente
+            if (!areBansSelected()) { // Error managment
+                $('#warningMessage').remove();
                 const warningHtml = '<div id="warningMessage" class="alert alert-danger mt-3" role="alert">Please select at least one banned hero for both teams before proceeding!</div>';
-                $(button).closest('.row').before(warningHtml); // Mostra il nuovo messaggio di avviso
-                return; // Interrompe l'esecuzione visto che la condizione nella funzione "areBansSelected" non è soddisfatta
+                $(button).closest('.row').before(warningHtml); 
+                return;
             }
-            $('#warningMessage').remove(); // Rimove eventuali messaggi di warning
-            const data = { // Recupera i valori selezionati nelle 4 select + scelta radio button
+            $('#warningMessage').remove();
+            const data = { //Gathering the selected options and assign them to the associated variables
                 radiantBans: $('#radiantBans').val(),
                 radiantPicks: $('#radiantPicks').val(),
                 direBans: $('#direBans').val(),
                 direPicks: $('#direPicks').val(),
                 sideChosen: $('input[name="sideChosen"]:checked').val(),
             };
-            $.ajax({ // Invia i dati racconti (select + radio button) al server tramite AJAX
-                url: "/suggestCM",
+            $.ajax({ //Pass data (select + radio button) to the backend via AJAX
+                url: "/suggestCM", // Defined endpoint in flask
                 type: "POST",
                 contentType: "application/json",
-                data: JSON.stringify(data), // Serializza i dati in JSON
-                success: function(response) {
-                    simulateTyping("generatedText", response.prompt, "cursor"); // Simula la digitazione usando il testo restituito dall prompt di risposta di Gemini AI
+                data: JSON.stringify(data), // Serialize data in JSON
+                success: function(response) { //If the responde prompt from Gemini API is received, call the function that simulate the typing in the first textbox
+                    simulateTyping("generatedText", response.prompt, "cursor"); 
                 },
-                error: function() {
+                error: function() { //Prompt error message if not
                     alert("An error occurred while processing your request. Please try again.");
                 }
             });
         });
-        document.getElementById('resetPage').addEventListener('click', function() { // Evento che gestisce quello che succede alla pressione del pulsante rosso di reset
-            $('.select2').val(null).trigger('change'); // Reset di tutte le select2
-            $('input[name="sideChosen"]').prop('checked', false); // Rimuove l'eventuale scelta fatta nei radio button
-            $('#warningMessage').remove(); // Rimove eventuali messaggi di warning
-            $('#generatedText').html('<span id="cursor" class="cursor">|</span>'); // Reset testo generato da Gemini AI nella textbox
-            updateSelectOptions(); // Aggiorna le opzioni disponibili
+        document.getElementById('resetPage').addEventListener('click', function() { //Event to manage the reset button
+            $('.select2').val(null).trigger('change'); // Reset all select2
+            $('input[name="sideChosen"]').prop('checked', false); // If a choice was made in the radio button, is being resetted
+            $('#warningMessage').remove(); // Remove any warning messages
+            $('#generatedText').html('<span id="cursor" class="cursor">|</span>'); // Reset any Gemini API generated text inside textbox
+            updateSelectOptions(); // Calls the function to update the options
         });
     });
 </script>

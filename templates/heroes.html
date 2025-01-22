@@ -1,36 +1,53 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="row mb-5 align-items-center" style="height: 15vh;">
-        <h1 class="text-center">DOTA 2 HEROES</h1>
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-12 col-lg-10">   
+            <div class="container py-5 text-light">
+                <header class="mb-5">
+                    <h1 class="text-center display-4 fw-bold">Dota 2 Heroes - Explore the Heroes</h1>
+                    <p class="text-center lead">Here you can browse through all the heroes of Dota 2 and find a quick recap. Each hero card displays their name, primary attribute, roles and the attack type, alongside a visual representation of the hero.
+                        Use the filters to easily search or explore the full list to find what you are looking for!
+                    </p>
+                </header>
+            </div>
+        </div>
+        <div class="col-lg-1"></div>
     </div>
     <div class="row">
         <div class="col-12 col-lg-10 offset-lg-1">
             <div class="row mb-5"><!-- Row for dropdown menus --> 
-                <div class="col d-flex justify-content-start">
-                    <form class="d-flex">
-                        <select class="form-select select2" id="searchedHero" data-placeholder="Search for a hero">
-                            <option></option>
+                <div class="col-12 col-sm-6 col-lg-4 mb-3">
+                    <form class="d-flex align-items-center">
+                        <div class="position-relative w-100">
+                            <select class="form-select select2" id="searchedHero" data-placeholder="Search for a hero" style="width:100%;">
+                                <option></option>
                                 {% for cards in heroes %}
                                     <option value="{{cards.heroName}}">{{cards.heroName}}</option>
                                 {% endfor %}
-                        </select>    
-                        <button class="btn btn-outline-success ms-3" type="submit" id="searchedHeroButton">Search</button>
-                    </form>                
+                            </select>
+                        </div>
+                        <button class="btn btn-outline-success ms-3" type="submit" id="searchedHeroButton" style="width:30%;">Search</button>
+                    </form>
                 </div>
-                <div class="col d-flex justify-content-end">
-                    <div class="dropdown me-5">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Sort by:   </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ url_for('heroesMELEE') }}">Attack type:   Melee</a></li>
-                            <li><a class="dropdown-item" href="{{ url_for('heroesRANGED') }}">Attack type:   Melee</a></li>
-                            <li><a class="dropdown-item" href="{{ url_for('heroesAGI') }}">Primary Attribute:   Agility</a></li>
-                            <li><a class="dropdown-item" href="{{ url_for('heroesSTR') }}">Primary Attribute:   Strenght</a></li>
-                            <li><a class="dropdown-item" href="{{ url_for('heroesINT') }}">Primary Attribute:   Intelligence</a></li>    
-                            <li><a class="dropdown-item" href="{{ url_for('heroesALL') }}">Primary Attribute:   Universal</a></li>                
-                        </ul>
-                    </div>
-                    <div>
-                        <a class="btn btn-danger" href="{{ url_for('heroes') }}" role="button">Reset</a>
+                <div class="col-12 col-sm-6 col-lg-4"></div> <!-- Colonna vuota -->
+                <div class="col-12 col-sm-6 col-lg-4">
+                    <div class="d-flex">
+                        <div class="dropdown me-3" style="width:70%;">
+                            <button class="btn btn-secondary dropdown-toggle d-flex justify-content-between align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="width:100%;">
+                                <span class="ms-1">Sort by</span>
+                                <span class="dropdown-toggle-icon"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ url_for('heroesMELEE') }}">Attack type: Melee</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('heroesRANGED') }}">Attack type: Ranged</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('heroesAGI') }}">Primary Attribute: Agility</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('heroesSTR') }}">Primary Attribute: Strength</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('heroesINT') }}">Primary Attribute: Intelligence</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('heroesALL') }}">Primary Attribute: Universal</a></li>
+                            </ul>
+                        </div>
+                        <a class="btn btn-outline-danger" href="{{ url_for('heroes') }}" role="button" style="width:30%;">Reset</a>
                     </div>
                 </div>
             </div>
@@ -38,9 +55,7 @@
                 {% for cards in heroes %}
                     <div class="col-6 col-md-4 col-lg-3 mb-4">
                         <div class="card position-relative" id="{{cards.heroId}}">
-                            <!-- Hero image -->
                             <img src="{{ url_for('static', filename='images/' ~ cards.heroId ~ '.png') }}" class="card-img-top" alt="{{ 'card_' ~ cards.heroName }}">
-                            <!-- Attribute hero icon -->
                             {% if cards.heroPrimaryAttribute == 'agi' %}                           
                                 <img src="{{ url_for('static', filename='images/' ~ 'agility.png') }}" class="position-absolute top-0 end-0 m-2" alt="{{cards.heroPrimaryAttribute}} " data-bs-toggle="tooltip" data-bs-placement="top" title="Agility">
                             {% elif cards.heroPrimaryAttribute == 'str' %}
@@ -63,46 +78,39 @@
     </div>
     <script>
         $(document).ready(function() {
-            $('.select2').val(null).trigger('change'); // Reset di tutte le select2 al caricamento della pagina (F5)
-            $('.select2').select2({ // Inizializzazione di Select2
-                theme: "bootstrap-5",  //Applica il tema di bootstrap 5 alle select 2
-                placeholder: function () {
-                    return $(this).data('placeholder');
-                },
+            const heroSelect = $('#searchedHero');
+            heroSelect.select2({
+                theme: "bootstrap-5",
+                placeholder: "Search for a hero",
                 multiple: false
             });
-			$('.select2').on('select2:open', function () { //Focus automatico sul campo di scrittura della select2 al click sulla stessa
-				const searchField = document.querySelector('.select2-container--open .select2-search__field');
-				if (searchField) {
-					searchField.focus();
-				}
-			});
-			function updateSelectOptions() { // Funzione per aggiornare le opzioni disponibili nelle select
-                const allSelectedValues = new Set();
-                $('.select2').each(function() { // Raccogli tutti i valori selezionati
-                    const value = $(this).val();
-                    if (value) {
-                        allSelectedValues.add(value);
-                    }
-                });
-            }
-            // Evento per il pulsante di suggerimento 3° e 4°
-            document.getElementById("searchedHeroButton").addEventListener("click", (event) => {
-                const button = event.target;
-                // Recupera i valori selezionati
-                const data = {
-                    searchedHero: $('#searchedHero').val(),
-                };
-                // Invia i dati al server tramite AJAX
-                $.ajax({
-                    url: "/heroesSEARCH", // Endpoint definito in Flask
-                    type: "POST",
-                    contentType: "application/json",
-                    data: JSON.stringify(data), // Serializza i dati in JSON
-                                        
+            heroSelect.on('select2:select', function(e) {
+                const selectedText = e.params.data.text;
+                const container = $(this).data('select2').$container;
+                const clearIcon = $('<span class="select2-clear-x" style="position: absolute; right: 40px; top: 50%; transform: translateY(-53%); cursor: pointer; font-size: 21px; color: #BF2E1A;">&times;</span>');
+                container.find('.select2-selection__rendered').append(clearIcon);
+                clearIcon.on('click', function() {
+                    heroSelect.val(null).trigger('change'); 
+                    $(this).remove();
+                    $('.card').show();
                 });
             });
-
+            heroSelect.on('select2:unselect', function() {
+                $(this).next('.select2-clear-x').remove();
+            });
+        });
+        document.getElementById("searchedHeroButton").addEventListener("click", (event) => {
+            event.preventDefault();
+            const selectedHero = $('#searchedHero').val(); // Prende il valore selezionato nella select2
+            if (selectedHero) { // Nascondo tutte le card e mostro solamente la card corrispondente al valore selezionato nella select2
+                $('.card').hide(); 
+                const heroCard = $(`.card`).filter(function () { 
+                    return $(this).find('.card-title').text().trim() === selectedHero;
+                });
+                heroCard.show(); 
+            } else { // Se non è selezionato nulla, 
+                $('.card').show(); // mostra tutte le card
+            }
         });
     </script>
 {% endblock %}

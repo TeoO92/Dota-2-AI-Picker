@@ -63,7 +63,7 @@ def geminiSuggest34():
     try:
         array34 = json.loads(response34.text.replace("'",'"'))  # Parsing JSON in array
     except json.JSONDecodeError:
-        return jsonify({"prompt": "Error: Unable to parse response from Gemini"}), 3000
+        return jsonify({"prompt": "Error: Unable to parse response from Gemini"}), 6660
     # Genera la stringa finale da inviare al frontend
     prompt_response34 = f"Recommended picks: {', '.join(array34)}"
     # Restituisci il prompt come risposta JSON
@@ -103,7 +103,7 @@ def geminiSuggest5():
     try:
         array5 = json.loads(response5.text.replace("'",'"'))  # Parsing JSON in array
     except json.JSONDecodeError:
-        return jsonify({"prompt": "Error: Unable to parse response from Gemini"}), 3000
+        return jsonify({"prompt": "Error: Unable to parse response from Gemini"}), 6660
     # Genera la stringa finale da inviare al frontend
     prompt_response5 = f"Recommended picks: {', '.join(array5)}"
     # Restituisci il prompt come risposta JSON
@@ -151,7 +151,7 @@ def geminiSuggestCM():
     try:
         arrayCM = json.loads(responseCM.text.replace("'",'"'))  # Parsing JSON in array
     except json.JSONDecodeError:
-        return jsonify({"prompt": "Error: Unable to parse response from Gemini"}), 3000
+        return jsonify({"prompt": "Error: Unable to parse response from Gemini"}), 6660
     # Genera la stringa finale da inviare al frontend
     prompt_responseCM = f"Recommended picks: {', '.join(arrayCM)}"
     # Restituisci il prompt come risposta JSON
@@ -283,26 +283,26 @@ def heroesALL():
         heroes.append(cards)
     return render_template("heroes.html", current_page="Dota 2 Heroes", heroes=heroes)
 
-@app.route("/heroesSEARCH")
-def heroesSEARCH():
-    # Recupera i dati inviati dal client
-    data = request.get_json()
-    searchedHero = data.get("searchedHero")
-    with connect() as conn:
-        cursor = conn.cursor()
-        cursor.execute(f"SELECT localized_name FROM heroes WHERE localized_name = '{searchedHero}';")
-        results = cursor.fetchall()
-        cursor.close()
-    heroes = []
-    for res in results:
-        heroId = res[0]
-        heroName = res[1]
-        heroPrimaryAttribute = res[2]
-        heroAttackType = res[3]
-        heroRoles = res[4]
-        cards = listHeroes(heroId, heroName, heroPrimaryAttribute, heroAttackType, heroRoles)
-        heroes.append(cards)
-    return render_template("searchedHero.html", current_page="Dota 2 Searched hero", heroes=heroes)
+''' @app.route("/heroDetail")
+    def heroDetail():
+        # Recupera i dati inviati dal client
+        data = request.get_json()
+        searchedHero = data.get("searchedHero")
+        with connect() as conn:
+            cursor = conn.cursor()
+            cursor.execute(f"SELECT localized_name FROM heroes WHERE localized_name = '{searchedHero}';")
+            results = cursor.fetchall()
+            cursor.close()
+        heroes = []
+        for res in results:
+            heroId = res[0]
+            heroName = res[1]
+            heroPrimaryAttribute = res[2]
+            heroAttackType = res[3]
+            heroRoles = res[4]
+            cards = listHeroes(heroId, heroName, heroPrimaryAttribute, heroAttackType, heroRoles)
+            heroes.append(cards)
+        return render_template("heroDetail.html", current_page="Dota 2 Searched hero", heroes=heroes) '''
 
 if __name__ == "__main__":
     app.run(port=80)

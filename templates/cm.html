@@ -8,8 +8,21 @@
         font-weight: 700;
     }
 </style>
-<div class="row align-items-center" style="height: 15vh;">
-    <h1>CAPTAINS MODE</h1>
+<div class="row">
+    <div class="col">   
+        <div class="container py-5 text-light">
+            <header class="mb-4">
+                <h1 class="text-center display-4 fw-bold mb-5">Captains Mode</h1>
+                <h3 class="text-center fw-bold mb-3">How It Works</h3>
+                <p class="text-center lead">
+                    This page also uses AI to generate hero suggestions. Start by selecting your faction (Radiant or Dire). To receive the first suggestions, input at least one ban for both allies and enemies.
+                    Unlike the Normal/Ranked mode, the suggestions button remains enabled after each press. Suggestions update dynamically with each new ban or pick added, whether allied or enemy.
+                    If you make a mistake, use the reset button to clear all selections and start over.<br>
+                    <span class="border-bottom text-warning">PLEASE NOTE: the suggestions always and only refer to picks, not bans!</span>
+                </p>
+            </header>
+        </div>
+    </div>
 </div>
 <div class="row mt-5"> <!-- Row selettore radiant/dire -->
     <div class="col">
@@ -26,7 +39,7 @@
 </div>
 <div class="row mt-5"> <!-- Row contenitore input group e pulsante-->
     <div class="col-lg-5 col-sm-12 mb-5">
-        <div class="input-group mb-5">
+        <div class="input-group mb-3">
             <div class="input-group-text input-group-text-cm">Radiant Bans</div>
             <select class="form-select select2" id="radiantBans" data-placeholder="Select Radiant heroes banned">
                 {% for hero in heroes %}
@@ -44,7 +57,7 @@
         </div>
     </div>
     <div class="col-lg-5 col-sm-12 mb-5">
-        <div class="input-group mb-5">
+        <div class="input-group mb-3">
             <div class="input-group-text input-group-text-cm">Dire Bans</div>
             <select class="form-select select2" id="direBans" data-placeholder="Select Dire heroes banned">
                 {% for hero in heroes %}
@@ -65,7 +78,7 @@
         <button id="suggestButton" type="button" class="btn btn-success">SUGGEST PICKS AND BANS</button>
     </div>
 </div>
-<div class="row mt-4 mb-4"> <!-- Row contenitore suggerimenti -->
+<div class="row mb-4"> <!-- Row contenitore suggerimenti -->
     <div class="col-12">
         <div id="picksCMTextBox" class="border p-3" style="font-family: 'Courier New', monospace; height: auto;">
             <p>Suggestions: </p>
@@ -161,13 +174,13 @@
             const button = event.target;
             if (!isTeamSelected()) {
                     $('#warningMessage').remove();
-                    const warningHtml = '<div id="warningMessage" class="alert alert-danger" role="alert">Please select your faction before proceeding!</div>';
+                    const warningHtml = '<div id="warningMessage" class="alert alert-danger mt-3" role="alert">Please select your faction before proceeding!</div>';
                     $(button).closest('.row').before(warningHtml);
                     return;
             }
             if (!areBansSelected()) {
                 $('#warningMessage').remove(); // Rimuovi il messaggio di avviso precedente
-                const warningHtml = '<div id="warningMessage" class="alert alert-danger" role="alert">Please select at least one banned hero for both teams before proceeding!</div>';
+                const warningHtml = '<div id="warningMessage" class="alert alert-danger mt-3" role="alert">Please select at least one banned hero for both teams before proceeding!</div>';
                 $(button).closest('.row').before(warningHtml); // Mostra il nuovo messaggio di avviso
                 return; // Interrompe l'esecuzione visto che la condizione nella funzione "areBansSelected" non è soddisfatta
             }

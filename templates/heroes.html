@@ -5,7 +5,7 @@
         <div class="col-12 col-lg-10">   
             <div class="container py-5 text-light">
                 <header class="mb-5">
-                    <h1 class="text-center display-4 fw-bold">Dota 2 Heroes - Explore the Heroes</h1>
+                    <h1 class="text-center display-4 fw-bold">Explore the Heroes</h1>
                     <p class="text-center lead">Here you can browse through all the heroes of Dota 2 and find a quick recap. Each hero card displays their name, primary attribute, roles and the attack type, alongside a visual representation of the hero.
                         Use the filters to easily search or explore the full list to find what you are looking for!
                     </p>
@@ -84,6 +84,12 @@
                 placeholder: "Search for a hero",
                 multiple: false
             });
+            $('.select2').on('select2:open', function () {
+				const searchField = document.querySelector('.select2-container--open .select2-search__field');
+				if (searchField) {
+					searchField.focus();
+				}
+			});
             heroSelect.on('select2:select', function(e) {
                 const selectedText = e.params.data.text;
                 const container = $(this).data('select2').$container;

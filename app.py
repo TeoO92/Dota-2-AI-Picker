@@ -41,20 +41,22 @@ def geminiSuggest34():
     enemy_hero1 = data.get("enemyHero1")
     enemy_hero2 = data.get("enemyHero2")
     # Prompt for Gemini AI
-    prompt34 = (f"Create a list of eight Dota 2 heroes to choose from, considering the following picks: "
-              f"Allied: {allied_hero1}, {allied_hero2}; Enemies: {enemy_hero1}, {enemy_hero2}. "
-              "To give me the most accurate suggestions, you MUST consider ALL of these parameters:"
-              "SYNERGY WITH ALLIED HEROES (complementarity and possible combos), COUNTERPICKS to neutralize "
-              "the enemy picks and/or to exploit their weaknesses and last but not least, the REMAINING ROLES: "
-              "there must be a perfect balance inside the team (generally a Dota 2 team need a 'primary support', a 'secondary support/roamer', a 'carry', an 'offlaner' and a 'midlaner'). "
-              "To further improve your choices, use OpenDota API to get updated statistics like overall highest winrate heroes and overall highest pickrate heroes "
-              "(use 'Public' section or 'Professional' one but not 'Turbo'!)."
-              "ABSOLUTELY DO NOT SUGGEST HEROES WHOSE ROLES HAVE ALREADY BEEN TAKEN BY THOSE SELECTED BY MY TEAM! For example, "
-              "do not suggest Lion if my team has already picked two supports. Logically, you also don't have to suggest heroes who have already been taken!"
-              "Theoretically, the third and fourth picks are the carry and the offlaner. Check if they have already been taken. If not, for suggestions, prioritize these two roles; "
-              "otherwise choose the best heroes using the same logic I described after the list of allied and enemy heroes."              
-              "YOUR OUTPUT: A text containing an array of hero names with no explanation or anything. "
-              "DO NOT FORMAT THE TEXT as code or anything, just provide me with a string of text that contains the array with the suggested heroes.")
+    prompt34 = (f"I am playing Dota 2 and the game mode is normal/ranked matchmaking. Create a list of ten heroes to choose from, considering the following picks: "
+               f"Allies: {allied_hero1}, {allied_hero2}; Enemies: {enemy_hero1}, {enemy_hero2}. "
+               "DO NOT SUGGEST HEROES WHO HAVE ALREADY BEEN PICKED BY EITHER TEAM!"
+               "To give me the most accurate suggestions, you MUST consider ALL of these parameters: "
+               "SYNERGY WITH ALLIED HEROES (complementarity and possible combos), COUNTERPICKS to neutralize "
+               "the enemy picks and/or to exploit their weaknesses and last but not least, the REMAINING ROLES. "
+               "There must be a perfect balance inside the team: generally a Dota 2 team needs a 'primary support', a 'secondary support/roamer', a 'carry', an 'offlaner' and a 'midlaner'). "
+               "For example, do not suggest a support if my team has already picked two of them! "
+               "By convention, this is the general pick order: primary support, secondary support/roamer, offlaner, carry', and midlaner. "
+               "Usually, the third and fourth picks are the offlaner and the carry. Check if they have already been taken. If not, for suggestions, prioritize these two roles; "
+               "otherwise choose the best heroes using the same logic I described after the list of allied and enemy heroes."
+               "To further improve your choices, use OpenDota API to get updated statistics. Limit your analysis to data derived from games played in the most recent patch."
+               "Place greater emphasis on heroes with a higher win rate. Consider not only the overall win rate of a hero, but also its performance against the heroes chosen by the opposing team to identify optimal counterpicks. "
+               "Restrict data analysis to matches played at the highest level of ranked matchmaking (Immortal) or in professional tournaments. "
+               "YOUR OUTPUT: A text containing an array of hero names with no explanation or anything. "
+               "DO NOT FORMAT THE TEXT as code or anything, just provide me with a string of text that contains the array with the suggested heroes.")
     response34 = model.generate_content(prompt34) # Calls Gemini AI to get a response prompt
     try: # Process the response (assuming that response34.text is a JSON array)
         array34 = json.loads(response34.text.replace("'",'"'))  # Parsing JSON in array
@@ -75,21 +77,22 @@ def geminiSuggest5():
     enemy_hero3 = data.get("enemyHero3")
     enemy_hero4 = data.get("enemyHero4")
     # Prompt for Gemini AI
-    prompt5 = (f"Create a list of eight Dota 2 heroes to choose from, considering the following picks: "
-              f"Allied: {allied_hero1}, {allied_hero2}, {allied_hero3}, {allied_hero4}; Enemies: {enemy_hero1}, {enemy_hero2}, {enemy_hero3}, {enemy_hero4}. "
-              "To give me the most accurate suggestions, you MUST consider ALL of these parameters:"
-              "SYNERGY WITH ALLIED HEROES (complementarity and possible combos), COUNTERPICKS to neutralize "
-              "the enemy picks and/or to exploit their weaknesses and last but not least, the REMAINING ROLES: "
-              "there must be a perfect balance inside the team (generally a Dota 2 team need a 'primary support', a 'secondary support/roamer', a 'carry', an 'offlaner' and a 'midlaner'). "
-              "To further improve your choices, use OpenDota API to get updated statistics like overall highest winrate heroes and overall highest pickrate heroes "
-              "(use 'Public' section or 'Professional' one but not 'Turbo'!)."
-              "ABSOLUTELY DO NOT SUGGEST HEROES WHOSE ROLES HAVE ALREADY BEEN TAKEN BY THOSE SELECTED BY MY TEAM! For example, "
-              "do not suggest Lion if my team has already picked two supports. Logically, you also don't have to suggest heroes who have already been taken!"
-              "To further improve your choices, use OpenDota API to get updated statistics like overall highest winrate heroes and overall highest pickrate heroes "
-              "(use 'Public' section or 'Professional' one but not 'Turbo'!). Theoretically, the last pick is the midlaner. Check if it has already been taken. "
-              "If not, suggest a midlaner; otherwise choose the best heroes using the same logic i described after the list of allied and enemy heroes."
-              "YOUR OUTPUT: A text containing an array of hero names with no explanation or anything. "
-              "DO NOT FORMAT THE TEXT as code or anything, just provide me with a string of text that contains the array with the suggested heroes.")
+    prompt5 = (f"I am playing Dota 2 and the game mode is normal/ranked matchmaking. Create a list of TEN heroes to choose from, considering the following picks: "
+               f"Allied: {allied_hero1}, {allied_hero2}, {allied_hero3}, {allied_hero4}; Enemies: {enemy_hero1}, {enemy_hero2}, {enemy_hero3}, {enemy_hero4}. "
+               "DO NOT SUGGEST HEROES WHO HAVE ALREADY BEEN PICKED BY EITHER TEAM!"
+               "To give me the most accurate suggestions, you MUST consider ALL of these parameters: "
+               "SYNERGY WITH ALLIED HEROES (complementarity and possible combos), COUNTERPICKS to neutralize "
+               "the enemy picks and/or to exploit their weaknesses and last but not least, the REMAINING ROLES. "
+               "There must be a perfect balance inside the team: generally a Dota 2 team needs a 'primary support', a 'secondary support/roamer', a 'carry', an 'offlaner' and a 'midlaner'). "
+               "For example, do not suggest a support if my team has already picked two of them! "
+               "By convention, this is the general pick order: primary support, secondary support/roamer, offlaner, carry', and midlaner. "
+               "Usually, the last pick is the midlaner. Check if this role is already been taken. If not, for suggestions, prioritize this role; "
+               "otherwise choose the best heroes using the same logic I described after the list of allied and enemy heroes."
+               "To further improve your choices, use OpenDota API to get updated statistics. Limit your analysis to data derived from games played in the most recent patch."
+               "Place greater emphasis on heroes with a higher win rate. Consider not only the overall win rate of a hero, but also its performance against the heroes chosen by the opposing team to identify optimal counterpicks. "
+               "Restrict data analysis to matches played at the highest level of ranked matchmaking (Immortal) or in professional tournaments. "
+               "YOUR OUTPUT: A text containing an array of hero names with no explanation or anything. "
+               "DO NOT FORMAT THE TEXT as code or anything, just provide me with a string of text that contains the array with the suggested heroes.")
     response5 = model.generate_content(prompt5) # Calls Gemini AI to get a response prompt
     try: # Process the response (assuming that response5.text is a JSON array)
         array5 = json.loads(response5.text.replace("'",'"'))  # Parsing JSON in array
@@ -117,21 +120,21 @@ def geminiSuggestCM():
     direBans = data.get("direBans")
     direPicks = data.get("direPicks")
     # Prompt for Gemini AI
-    promptCM = (f"I am playing at Dota 2 in Captains Mode and actually playing as {sideChosen}. "
-              f"Create a list of eight Dota 2 heroes to choose from, considering the following picks and bans: "
-              f"Radiant bans: {radiantBans}; radiant picks: {radiantPicks}; Dire bans: {direBans}; Dire Picks: {direPicks}. "
-              "To give me the most accurate suggestions, you MUST consider ALL of these parameters:"
-              "SYNERGY WITH ALLIED HEROES (complementarity and possible combos), COUNTERPICKS to neutralize "
-              "the enemy picks and/or to exploit their weaknesses and last but not least, the REMAINING ROLES: "
-              "there must be a perfect balance inside the team (generally a Dota 2 team need a 'primary support', a 'secondary support/roamer', a 'carry', an 'offlaner' and a 'midlaner'). "
-              "To further improve your choices, use OpenDota API to get updated statistics like overall highest winrate heroes and overall highest pickrate heroes "
-              "(use 'Public' section or 'Professional' one but not 'Turbo'!)."
-              "ABSOLUTELY DO NOT SUGGEST HEROES WHOSE ROLES HAVE ALREADY BEEN TAKEN BY THOSE SELECTED BY MY TEAM! For example, "
-              "do not suggest Lion if my team has already picked two supports. Logically, you also don't have to suggest heroes who have already been taken or banned!"
-              "To further improve your choices, use OpenDota API to get updated statistics like overall highest winrate heroes and overall highest pickrate heroes "
-              f"(use 'Public' section or 'Professional' one but not 'Turbo'!). Always keep in mind that i am currently playing as {sideChosen}. DON'T SUGGEST THE ALREADY BANNED HEROES!"
-              "YOUR OUTPUT: A text containing an array of hero names with no explanation or anything. "
-              "DO NOT FORMAT THE TEXT as code or anything, just provide me with a string of text that contains the array with the suggested heroes.")
+    promptCM = (f"I am playing Dota 2 and the game mode is Captain's Mode. I am currently playing for the {sideChosen} side. "
+               f"Create a list of ten heroes to choose from. Consider the following picks and bans: "
+               f"Radiant bans: {radiantBans}; radiant picks: {radiantPicks}; Dire bans: {direBans}; Dire Picks: {direPicks}. "
+               "DO NOT SUGGEST HEROES WHO HAVE ALREADY BEEN PICKED OR BANNED BY EITHER TEAM!"
+               "To give me the most accurate suggestions, you MUST consider ALL of these parameters: "
+               "SYNERGY WITH ALLIED HEROES (complementarity and possible combos), COUNTERPICKS to neutralize "
+               "the enemy picks and/or to exploit their weaknesses and last but not least, the REMAINING ROLES. "
+               "There must be a perfect balance inside the team: generally a Dota 2 team needs a 'primary support', a 'secondary support/roamer', a 'carry', an 'offlaner' and a 'midlaner'). "
+               "For example, do not suggest a support if my team has already picked two of them! "
+               "By convention, this is the general pick order: primary support, secondary support/roamer, offlaner, carry', and midlaner. "
+               "To further improve your choices, use OpenDota API to get updated statistics. Limit your analysis to data derived from games played in the most recent patch."
+               "Place greater emphasis on heroes with a higher win rate. Consider not only the overall win rate of a hero, but also its performance against the heroes chosen by the opposing team to identify optimal counterpicks. "
+               "Restrict data analysis to matches played at the highest level of ranked matchmaking (Immortal) or in professional tournaments. "
+               "YOUR OUTPUT: A text containing an array of hero names with no explanation or anything. "
+               "DO NOT FORMAT THE TEXT as code or anything, just provide me with a string of text that contains the array with the suggested heroes.")
     responseCM = model.generate_content(promptCM) # Calls Gemini AI to get a response prompt
     try: # Process the response (assuming that responseCM.text is a JSON array)
         arrayCM = json.loads(responseCM.text.replace("'",'"'))  # Parsing JSON in array

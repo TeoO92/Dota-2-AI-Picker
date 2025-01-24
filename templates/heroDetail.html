@@ -1,112 +1,33 @@
 {% extends "base.html" %}
 {% block content %}
-    <div class="row mb-5 align-items-center" style="height: 15vh;">
-        <h1 class="text-center">DOTA 2 HEROES</h1>
-    </div>
-    <div class="row">
-        <div class="col-12 col-lg-10 offset-lg-1">
-            <div class="row mb-5"><!-- Row for dropdown menus --> 
-                <div class="col d-flex justify-content-start">
-                    <form class="d-flex">
-                        <select class="form-select select2" id="searchedHero" data-placeholder="Search for a hero">
-                            <option></option>
-                                {% for cards in heroes %}
-                                    <option value="{{cards.heroName}}">{{cards.heroName}}</option>
-                                {% endfor %}
-                        </select>    
-                        <button class="btn btn-outline-success ms-3" type="submit" id="searchedHeroButton">Search</button>
-                    </form>                
-                </div>
-                <div class="col d-flex justify-content-end">
-                    <div class="dropdown me-5">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Sort by:   </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ url_for('heroesMELEE') }}">Attack type:   Melee</a></li>
-                            <li><a class="dropdown-item" href="{{ url_for('heroesRANGED') }}">Attack type:   Melee</a></li>
-                            <li><a class="dropdown-item" href="{{ url_for('heroesAGI') }}">Primary Attribute:   Agility</a></li>
-                            <li><a class="dropdown-item" href="{{ url_for('heroesSTR') }}">Primary Attribute:   Strenght</a></li>
-                            <li><a class="dropdown-item" href="{{ url_for('heroesINT') }}">Primary Attribute:   Intelligence</a></li>    
-                            <li><a class="dropdown-item" href="{{ url_for('heroesALL') }}">Primary Attribute:   Universal</a></li>                
-                        </ul>
-                    </div>
-                    <div>
-                        <a class="btn btn-danger" href="{{ url_for('heroes') }}" role="button">Reset</a>
-                    </div>
-                </div>
-            </div>
-            <div class="row"> <!-- row for dynamic cards -->
-                {% for cards in heroes %}
-                    <div class="col-6 col-md-4 col-lg-3 mb-4">
-                        <div class="card position-relative" id="{{cards.heroId}}">
-                            <!-- Hero image -->
-                            <img src="{{ url_for('static', filename='images/' ~ cards.heroId ~ '.png') }}" class="card-img-top" alt="{{ 'card_' ~ cards.heroName }}">
-                            <!-- Attribute hero icon -->
-                            {% if cards.heroPrimaryAttribute == 'agi' %}                           
-                                <img src="{{ url_for('static', filename='images/' ~ 'agility.png') }}" class="position-absolute top-0 end-0 m-2" alt="{{cards.heroPrimaryAttribute}} " data-bs-toggle="tooltip" data-bs-placement="top" title="Agility">
-                            {% elif cards.heroPrimaryAttribute == 'str' %}
-                                <img src="{{ url_for('static', filename='images/' ~ 'strength.png') }}" class="position-absolute top-0 end-0 m-2" alt="{{cards.heroPrimaryAttribute}}" data-bs-toggle="tooltip" data-bs-placement="top" title="Strength">
-                            {% elif cards.heroPrimaryAttribute == 'int' %}
-                                <img src="{{ url_for('static', filename='images/' ~ 'intelligence.png') }}" class="position-absolute top-0 end-0 m-2" alt="{{cards.heroPrimaryAttribute}}" data-bs-toggle="tooltip" data-bs-placement="top" title="Intelligence">
-                            {% elif cards.heroPrimaryAttribute == 'all' %}
-                                <img src="{{ url_for('static', filename='images/' ~ 'universal.png') }}" class="position-absolute top-0 end-0 m-2" alt="{{cards.heroPrimaryAttribute}}" data-bs-toggle="tooltip" data-bs-placement="top" title="Universal">
-                            {% endif %}
-                            <div class="card-body">
-                                <h5 class="card-title mb-4">{{cards.heroName}}</h5>
-                                <p class="card-text"><b>Roles: </b>{{ cards.heroRoles | join(', ') }}</p>
-                                <p class="card-text"><b>Attack type: </b>{{cards.heroAttackType}}</p>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
+<div class="row">
+    <div class="col-lg-2"></div>
+    <div class="col-12 col-lg-8">   
+        <div class="container py-5 text-light">
+            <header class="mb-5">
+                <h1 class="text-center display-4 fw-bold mb-5">Abaddon, the Lord of Avernus</h1> <!-- db: lore_title  -->
+                <p class="text-center lead"> <!-- db: lore_text  -->
+                    The Font of Avernus is the source of a family's strength, a crack in primal stones from which vapors of prophetic power have issued for generations.
+                    Each newborn of the cavernous House Avernus is bathed in the black mist, and by this baptism they are given an innate connection to the mystic energies of the land.
+                    They grow up believing themselves fierce protectors of their lineal traditions, the customs of the realm—but what they really are protecting is the Font itself. And the motives of the mist are unclear.
+                    When the infant Abaddon was bathed in the Font, they say something went awry. In the child's eyes there flared a light of comprehension that startled all present and set the sacerdotes to whispering.
+                    He was raised with every expectation of following the path all scions of Avernus took—to train in war, that in times of need he might lead the family's army in defense of the ancestral lands.
+                    But Abaddon was always one apart. Where others trained with weapons, he bent himself to meditation in the presence of the mist.
+                    He drank deep from the vapors that welled from the Font, learning to blend his spirit with the potency that flowed from far beneath the House; he became a creature of the black mist.
+                    There was bitterness within the House Avernus—elders and young alike accusing him of neglecting his responsibilities.
+                    But all such accusations stopped when Abaddon rode into battle, and they saw how the powers of the mist had given him mastery over life and death beyond those of any lord the House had ever known.
+                </p>
+            </header>
         </div>
     </div>
-    <script>
-        $(document).ready(function() {
-            $('.select2').val(null).trigger('change'); // Reset di tutte le select2 al caricamento della pagina (F5)
-            $('.select2').select2({ // Inizializzazione di Select2
-                theme: "bootstrap-5",  //Applica il tema di bootstrap 5 alle select 2
-                placeholder: function () {
-                    return $(this).data('placeholder');
-                },
-                multiple: false
-            });
-			$('.select2').on('select2:open', function () { //Focus automatico sul campo di scrittura della select2 al click sulla stessa
-				const searchField = document.querySelector('.select2-container--open .select2-search__field');
-				if (searchField) {
-					searchField.focus();
-				}
-			});
-			function updateSelectOptions() { // Funzione per aggiornare le opzioni disponibili nelle select
-                const allSelectedValues = new Set();
-                $('.select2').each(function() { // Raccogli tutti i valori selezionati
-                    const value = $(this).val();
-                    if (value) {
-                        allSelectedValues.add(value);
-                    }
-                });
-            }
-            // Evento per il pulsante di suggerimento 3° e 4°
-            document.getElementById("searchedHeroButton").addEventListener("click", (event) => {
-                const button = event.target;
-                // Recupera i valori selezionati
-                const data = {
-                    searchedHero: $('#searchedHero').val(),
-                };
-                // Invia i dati al server tramite AJAX
-                $.ajax({
-                    url: "/heroesSEARCH", // Endpoint definito in Flask
-                    type: "POST",
-                    contentType: "application/json",
-                    data: JSON.stringify(data), // Serializza i dati in JSON
-                                        
-                });
-            });
-
-        });
-
-
-
-    </script>
+    <div class="col-lg-2"></div>
+</div>
+<div class="row">
+    
+</div>
+<!-- script part if needed -->
+<script>
+    
+</script>
 {% endblock %}
-{% set title = "Dota 2 AI Picker - Heroes - Searched hero" %}
+{% set title = "Dota 2 AI Picker - Heroes - Details" %}

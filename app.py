@@ -269,26 +269,29 @@ def heroesALL():
         heroes.append(cards)
     return render_template("heroes.html", current_page="Dota 2 Universal Heroes", heroes=heroes)
 
-''' @app.route("/heroDetail")      "---  FUTURE UPDATE. WORK IN PROGRESS  ---"
-    def heroDetail():
-        # Gather data sent from client
-        data = request.get_json()
-        searchedHero = data.get("searchedHero")
-        with connect() as conn:
-            cursor = conn.cursor()
-            cursor.execute(f"SELECT localized_name FROM heroes WHERE localized_name = '{searchedHero}';")
-            results = cursor.fetchall()
-            cursor.close()
-        heroes = []
-        for res in results:
-            heroId = res[0]
-            heroName = res[1]
-            heroPrimaryAttribute = res[2]
-            heroAttackType = res[3]
-            heroRoles = res[4]
-            cards = listHeroes(heroId, heroName, heroPrimaryAttribute, heroAttackType, heroRoles)
-            heroes.append(cards)
-        return render_template("heroDetail.html", current_page="Dota 2 Searched hero", heroes=heroes) '''
+''' ---  FUTURE UPDATE. WORK IN PROGRESS  ---" '''
+@app.route("/heroDetail")  
+def heroDetail():
+    return render_template("heroDetail.html", current_page="Dota 2 - Heroes - Details", heroes=heroes)    
+
+'''# Gather data sent from client
+data = request.get_json()
+searchedHero = data.get("searchedHero")
+with connect() as conn:
+    cursor = conn.cursor()
+    cursor.execute(f"SELECT * FROM heroes WHERE id = '{searchedHero}';")
+    results = cursor.fetchall()
+    cursor.close()
+heroes = []
+for res in results:
+    heroId = res[0]
+    heroName = res[1]
+    heroPrimaryAttribute = res[2]
+    heroAttackType = res[3]
+    heroRoles = res[4]
+    cards = listHeroes(heroId, heroName, heroPrimaryAttribute, heroAttackType, heroRoles)
+    heroes.append(cards)'''
+    
 
 if __name__ == "__main__":
     app.run(port=80)

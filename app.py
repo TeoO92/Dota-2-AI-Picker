@@ -11,7 +11,18 @@ app = Flask(__name__)
 
 load_dotenv() # Loads environmental variables from .env file (or Render)
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY") # Loads environmental variables from .env file (or Render)
-model = genai.GenerativeModel(model_name='gemini-1.5-flash-8b-latest')
+genai.configure(api_key=GEMINI_API_KEY)
+generation_config = { # Create the model
+  "temperature": 0.05,
+  "top_p": 0.9,
+  "top_k": 64,
+  "max_output_tokens": 65536,
+  "response_mime_type": "text/plain",
+}
+model = genai.GenerativeModel(
+    model_name="gemini-2.0-flash-thinking-exp-01-21",
+    generation_config=generation_config,
+)
 
 class listHeroes:
     def __init__(self, heroId, heroName, heroPrimaryAttribute, heroAttackType, heroRoles):
@@ -43,7 +54,7 @@ def geminiSuggest34():
     enemy_hero1 = data.get("enemyHero1")
     enemy_hero2 = data.get("enemyHero2")
     prompt34 = (  # Prompt for Gemini AI
-                f"I am playing Dota 2 and the game mode is normal/ranked matchmaking. Create a list of ten heroes to choose from, considering the following picks: "
+                f"I am playing Dota 2 and the game mode is normal/ranked matchmaking. Create a list of TWELVE heroes to choose from, considering the following picks: "
                 f"Allies: {allied_hero1}, {allied_hero2}; Enemies: {enemy_hero1}, {enemy_hero2}. "
                 "DO NOT SUGGEST HEROES WHO HAVE ALREADY BEEN PICKED BY EITHER TEAM!"
                 "To give me the most accurate suggestions, you MUST consider ALL of these parameters: "
@@ -58,7 +69,7 @@ def geminiSuggest34():
                 "Place greater emphasis on heroes with a higher win rate. Consider not only the overall win rate of a hero, but also its performance against the heroes chosen by the opposing team to identify optimal counterpicks. "
                 "Restrict data analysis to matches played at the highest level of ranked matchmaking (Immortal) or in professional tournaments. "
                 "YOUR OUTPUT: Provide a JSON array containing the names of recommended heroes. Do not add any other text, explanations, or formatting. The array should be properly formatted with square brackets [ ] and comma-separated hero names in quotes. "
-                "Before and after the array, DO NOT INCLUDE ANY SPACES OR EXTRA CHARACTER SUCH AS LINE BREAKS OR SIMILAR! Your response MUST BE LIKE THIS: ['Hero1', 'Hero2', 'Hero3', 'Hero4', 'Hero5', 'Hero6', 'Hero7', 'Hero8', 'Hero9', 'Hero10']."
+                "Before and after the array, DO NOT INCLUDE ANY SPACES OR EXTRA CHARACTER SUCH AS LINE BREAKS OR SIMILAR! Your response MUST BE LIKE THIS: ['Hero1', 'Hero2', 'Hero3', 'Hero4', 'Hero5', 'Hero6', 'Hero7', 'Hero8', 'Hero9', 'Hero10', 'Hero11', 'Hero12']."
                 )
     prompt34 = prompt34.replace("'",'"')
     try: # Process the response (assuming that response34.text is a JSON array)
@@ -89,7 +100,7 @@ def geminiSuggest5():
     enemy_hero3 = data.get("enemyHero3")
     enemy_hero4 = data.get("enemyHero4")
     prompt5 = (  # Prompt for Gemini AI
-                f"I am playing Dota 2 and the game mode is normal/ranked matchmaking. Create a list of TEN heroes to choose from, considering the following picks: "
+                f"I am playing Dota 2 and the game mode is normal/ranked matchmaking. Create a list of TWELVE heroes to choose from, considering the following picks: "
                 f"Allied: {allied_hero1}, {allied_hero2}, {allied_hero3}, {allied_hero4}; Enemies: {enemy_hero1}, {enemy_hero2}, {enemy_hero3}, {enemy_hero4}. "
                 "DO NOT SUGGEST HEROES WHO HAVE ALREADY BEEN PICKED BY EITHER TEAM!"
                 "To give me the most accurate suggestions, you MUST consider ALL of these parameters: "
@@ -104,7 +115,7 @@ def geminiSuggest5():
                 "Place greater emphasis on heroes with a higher win rate. Consider not only the overall win rate of a hero, but also its performance against the heroes chosen by the opposing team to identify optimal counterpicks. "
                 "Restrict data analysis to matches played at the highest level of ranked matchmaking (Immortal) or in professional tournaments. "
                 "YOUR OUTPUT: Provide a JSON array containing the names of recommended heroes. Do not add any other text, explanations, or formatting. The array should be properly formatted with square brackets [ ] and comma-separated hero names in quotes. "
-                "Before and after the array, DO NOT INCLUDE ANY SPACES OR EXTRA CHARACTER SUCH AS LINE BREAKS OR SIMILAR! Your response MUST BE LIKE THIS: ['Hero1', 'Hero2', 'Hero3', 'Hero4', 'Hero5', 'Hero6', 'Hero7', 'Hero8', 'Hero9', 'Hero10']."
+                "Before and after the array, DO NOT INCLUDE ANY SPACES OR EXTRA CHARACTER SUCH AS LINE BREAKS OR SIMILAR! Your response MUST BE LIKE THIS: ['Hero1', 'Hero2', 'Hero3', 'Hero4', 'Hero5', 'Hero6', 'Hero7', 'Hero8', 'Hero9', 'Hero10', 'Hero11', 'Hero12']."
                 )
     prompt5 = prompt5.replace("'",'"')
     try: # Process the response (assuming that response5.text is a JSON array)
